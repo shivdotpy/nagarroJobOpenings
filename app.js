@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 
 // Routes
 const userRoute = require("./src/routers/user.router");
+const jobRoute = require("./src/routers/job.router");
 
 const PORT = process.env.PORT || 3000;
 
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userRoute);
+app.use("/job", jobRoute);
 
 app.listen(PORT, () => {
   console.log(`Listning on port ${PORT}`);

@@ -1,6 +1,24 @@
+const jwt = require("jsonwebtoken");
+
 const authMiddleware = (req, res, next) => {
-  console.log("middleware, WIP");
-  next();
+  console.log(req.headers.token);
+  if (!req.headers.token) {
+    return res.status(401).send({
+      error: true,
+      message: "Unauthorised Access"
+    });
+  } else {
+    jwt.verify(req.headers.token, "nagarroSecret", function(err, decoded) {
+      if (err) {
+        return res.status(401).send({
+          error: true,
+          message: "Unauthorised Access"
+        });
+      } else {
+        next();
+      }
+    });
+  }
 };
 
 module.exports = authMiddleware;
