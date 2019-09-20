@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 
 const authMiddleware = (req, res, next) => {
-  console.log(req.headers.token);
   if (!req.headers.token) {
     return res.status(401).send({
       error: true,
