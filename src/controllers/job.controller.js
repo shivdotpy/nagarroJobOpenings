@@ -25,3 +25,29 @@ module.exports.add = (req, res) => {
     }
   });
 };
+
+module.exports.getLatestJobs = (req, res) => {
+  // Pagination
+  let limit = parseInt(req.query.count);
+  let skip = (parseInt(req.query.page) - 1) * parseInt(req.query.count);
+
+  jobModel.find(
+    {},
+    { title: 1, createdAt: 1 },
+    { sort: { createdAt: -1 }, limit, skip: skip ? skip : 0 },
+    (err, results) => {
+      if (err) {
+        return res.status(500).send({
+          error: true,
+          message: "Error while getting job",
+          data: err
+        });
+      } else {
+        res.status(200).send({
+          error: false,
+          data: results
+        });
+      }
+    }
+  );
+};

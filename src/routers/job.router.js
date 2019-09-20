@@ -7,4 +7,6 @@ router.use(authMiddleware);
 
 router.post("/add", jobController.add);
 
+router.get("/latest", jobController.getLatestJobs);
+
 module.exports = router;
