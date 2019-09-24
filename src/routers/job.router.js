@@ -11,4 +11,6 @@ router.get("/latest", jobController.getLatestJobs);
 
 router.delete("/delete/:id", jobController.deleteJob);
 
+router.put("/edit/:id", jobController.editJobs);
+
 module.exports = router;

@@ -85,3 +85,33 @@ module.exports.deleteJob = (req, res) => {
     }
   });
 };
+
+module.exports.editJobs = (req, res) => {
+  const jobId = req.params.id;
+
+  jobModel.findOneAndUpdate(
+    { _id: jobId },
+    {
+      title: req.body.title,
+      description: req.body.description,
+      jobType: req.body.jobType,
+      location: req.body.location,
+      skills: req.body.skills,
+      noOfPositions: req.body.noOfPositions
+    },
+    (err, jobUpdated) => {
+      if (err) {
+        return res.status(500).send({
+          error: true,
+          message: "Error while updating Job",
+          data: err
+        });
+      } else {
+        return res.status(200).send({
+          error: false,
+          message: "Job updated successfully"
+        });
+      }
+    }
+  );
+};
