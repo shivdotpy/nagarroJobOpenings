@@ -10,6 +10,9 @@ const jobRoute = require("./src/routers/job.router");
 
 const PORT = process.env.PORT || 3000;
 
+// CORS
+app.use(cors());
+
 // DB connection
 // mongodb://shiv:shiv1234567890@ds163745.mlab.com:63745/nagarro
 mongoose.connect(

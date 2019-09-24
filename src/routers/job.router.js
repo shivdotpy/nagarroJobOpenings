@@ -9,4 +9,6 @@ router.post("/add", jobController.add);
 
 router.get("/latest", jobController.getLatestJobs);
 
+router.delete("/delete/:id", jobController.deleteJob);
+
 module.exports = router;

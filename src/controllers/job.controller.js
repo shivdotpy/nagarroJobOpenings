@@ -33,7 +33,7 @@ module.exports.getLatestJobs = (req, res) => {
 
   jobModel.find(
     {},
-    { title: 1, createdAt: 1 },
+    {},
     { sort: { createdAt: -1 }, limit, skip: skip ? skip : 0 },
     (err, results) => {
       if (err) {
@@ -50,4 +50,38 @@ module.exports.getLatestJobs = (req, res) => {
       }
     }
   );
+};
+
+module.exports.deleteJob = (req, res) => {
+  const jobId = req.params.id;
+
+  jobModel.findOne({ _id: jobId }, (err, jobFound) => {
+    if (err) {
+      return res.status(500).send({
+        error: true,
+        message: "Error while finding Job",
+        data: err
+      });
+    } else if (!jobFound) {
+      return res.status(403).send({
+        error: true,
+        message: "No job available with this ID"
+      });
+    } else {
+      jobModel.findOneAndDelete({ _id: jobId }, (err, jobDeleted) => {
+        if (err) {
+          return res.status(500).send({
+            error: true,
+            message: "Error while deleting Job",
+            data: err
+          });
+        } else {
+          return res.status(200).send({
+            error: false,
+            message: "Job opening deleted successfully"
+          });
+        }
+      });
+    }
+  });
 };
