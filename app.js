@@ -19,7 +19,7 @@ mongoose.connect(
   "mongodb://shiv:shiv1234567890@ds163745.mlab.com:63745/nagarro",
   { useNewUrlParser: true },
   () => {
-    console.log("DB connected");
+    console.log("DB connected...");
   }
 );
 
