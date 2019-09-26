@@ -11,4 +11,6 @@ router.get("/all", skillController.getAllSkills);
 
 router.put("/edit/:skillId", skillController.editSkill);
 
+router.delete("/delete/:skillId", skillController.deleteSkill);
+
 module.exports = router;
