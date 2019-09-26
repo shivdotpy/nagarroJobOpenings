@@ -95,11 +95,25 @@ module.exports.login = (req, res) => {
       ) {
         if (result) {
           var token = jwt.sign({ userId: userResult._id }, "nagarroSecret");
+
+          // User Name
+          const user = req.body.email.split("@")[0];
+          let firstName = "";
+          let lastName = "";
+          if (user.includes(".")) {
+            firstName = user.split(".")[0];
+            lastName = user.split(".")[1];
+          } else {
+            firstName = user;
+          }
+
           return res.status(200).send({
             error: false,
             message: "Logged in successfully",
             data: {
-              token: token
+              token: token,
+              firstName: firstName,
+              lastName: lastName ? lastName : null
             }
           });
         } else {
