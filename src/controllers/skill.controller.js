@@ -110,22 +110,23 @@ module.exports.editSkill = (req, res) => {
 };
 
 module.exports.deleteSkill = (req, res) => {
-  skillModel.findOneAndRemove(
-    { _id: req.body.skillId },
-    (err, skillDeleted) => {
-      if (err) {
-        return res.status(500).send({
-          error: true,
-          message: "Error while deleting skill",
-          data: err
-        });
-      } else {
-        console.log(skillDeleted);
-        return res.status(200).send({
-          error: false,
-          message: "Skill deleted successfully"
-        });
-      }
+  skillModel.findByIdAndDelete(req.params.skillId, (err, skillDeleted) => {
+    if (err) {
+      return res.status(500).send({
+        error: true,
+        message: "Error while deleting skill",
+        data: err
+      });
+    } else if (!skillDeleted) {
+      return res.status(403).send({
+        error: true,
+        message: "No skill found with this ID"
+      });
+    } else {
+      return res.status(200).send({
+        error: false,
+        message: "Skill deleted successfully"
+      });
     }
-  );
+  });
 };

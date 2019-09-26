@@ -110,13 +110,18 @@ module.exports.editLocation = (req, res) => {
 
 module.exports.deleteLocation = (req, res) => {
   locationModel.findOneAndRemove(
-    { _id: req.body.locationId },
+    { _id: req.params.locationId },
     (err, locationDeleted) => {
       if (err) {
         return res.status(500).send({
           error: true,
           message: "Error while deleting location",
           data: err
+        });
+      } else if (!skillDeleted) {
+        return res.status(403).send({
+          error: true,
+          message: "No location found with this ID"
         });
       } else {
         return res.status(200).send({
