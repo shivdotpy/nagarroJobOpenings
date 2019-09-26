@@ -14,7 +14,7 @@ const authMiddleware = (req, res, next) => {
           message: "Unauthorised Access"
         });
       } else {
-        console.log(decoded);
+        req.userId = decoded.userId;
         next();
       }
     });

@@ -7,4 +7,6 @@ router.use(authMiddleware);
 
 router.post("", referController.addRefer);
 
+router.get("/:jobId", referController.getReferalsByJobId);
+
 module.exports = router;
