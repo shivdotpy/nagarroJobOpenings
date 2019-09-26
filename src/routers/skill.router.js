@@ -9,6 +9,6 @@ router.post("/add", skillController.addSkill);
 
 router.get("/all", skillController.getAllSkills);
 
-router.put("/edit", skillController.editSkill);
+router.put("/edit/:skillId", skillController.editSkill);
 
 module.exports = router;

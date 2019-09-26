@@ -66,5 +66,45 @@ module.exports.getAllSkills = (req, res) => {
 };
 
 module.exports.editSkill = (req, res) => {
-  res.send("Edit skill by id");
+  if (!req.body.name) {
+    return res.status(403).send({
+      error: true,
+      message: "Skill name required"
+    });
+  }
+
+  const skillId = req.params.skillId;
+  skillModel.findOne({ _id: skillId }, (err, skillFound) => {
+    if (err) {
+      return res.status(500).send({
+        error: true,
+        message: "Error while finding skill",
+        data: err
+      });
+    } else if (skillFound) {
+      return res.status(403).send({
+        error: true,
+        message: "Skill name already exists"
+      });
+    } else {
+      skillModel.findOneAndUpdate(
+        { _id: skillId },
+        { name: req.body.name },
+        (err, skillUpdated) => {
+          if (err) {
+            return res.status(500).send({
+              error: true,
+              message: "Error while updating skill",
+              data: err
+            });
+          } else {
+            return res.status(200).send({
+              error: false,
+              message: "Skill updated successfully"
+            });
+          }
+        }
+      );
+    }
+  });
 };
