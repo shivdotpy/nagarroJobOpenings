@@ -48,7 +48,21 @@ module.exports.addSkill = (req, res) => {
 };
 
 module.exports.getAllSkills = (req, res) => {
-  res.send("Get all Skill qip");
+  skillModel.find({}, (err, skillsArr) => {
+    if (err) {
+      return res.status(500).send({
+        error: true,
+        message: "Error while finding skills",
+        data: err
+      });
+    } else {
+      return res.status(200).send({
+        error: false,
+        message: skillsArr.length ? "Skills found" : "No Skill found",
+        data: skillsArr
+      });
+    }
+  });
 };
 
 module.exports.editSkill = (req, res) => {
