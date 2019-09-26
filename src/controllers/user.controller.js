@@ -113,7 +113,8 @@ module.exports.login = (req, res) => {
             data: {
               token: token,
               firstName: firstName,
-              lastName: lastName ? lastName : null
+              lastName: lastName ? lastName : null,
+              role: userResult.role
             }
           });
         } else {
