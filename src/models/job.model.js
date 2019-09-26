@@ -7,7 +7,8 @@ const jobModel = mongoose.Schema(
     location: String,
     jobType: String,
     description: String,
-    noOfPositions: Number
+    noOfPositions: Number,
+    experienceRequired: String
   },
   {
     timestamps: true

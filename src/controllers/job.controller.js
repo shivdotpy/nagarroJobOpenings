@@ -7,7 +7,8 @@ module.exports.add = (req, res) => {
     jobType: req.body.jobType,
     location: req.body.location,
     skills: req.body.skills,
-    noOfPositions: req.body.noOfPositions
+    noOfPositions: req.body.noOfPositions,
+    experienceRequired: req.body.experienceRequired
   });
 
   Job.save((err, savedJob) => {
@@ -97,7 +98,8 @@ module.exports.editJobs = (req, res) => {
       jobType: req.body.jobType,
       location: req.body.location,
       skills: req.body.skills,
-      noOfPositions: req.body.noOfPositions
+      noOfPositions: req.body.noOfPositions,
+      experienceRequired: req.body.experienceRequired
     },
     (err, jobUpdated) => {
       if (err) {
