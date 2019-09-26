@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const referModel = mongoose.Schema({
+  jobId: String,
   name: String,
   mobile: String,
   email: String,

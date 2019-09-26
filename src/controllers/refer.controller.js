@@ -30,6 +30,7 @@ module.exports.addRefer = (req, res) => {
   }
 
   const refer = new referModel({
+    jobId: req.body.jobId,
     name: req.body.name,
     email: req.body.email,
     mobile: req.body.mobile,
