@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 // Routes
 const userRoute = require("./src/routers/user.router");
 const jobRoute = require("./src/routers/job.router");
+const referRoute = require("./src/routers/refer.router");
 
 const PORT = process.env.PORT || 3000;
 
@@ -23,8 +24,8 @@ mongoose.connect(
   }
 );
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 
 app.get("/", (req, res) => {
   res.send("App is working");
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
 
 app.use("/user", userRoute);
 app.use("/job", jobRoute);
+app.use("/refer", referRoute);
 
 app.listen(PORT, () => {
   console.log(`Listning on port ${PORT}`);
