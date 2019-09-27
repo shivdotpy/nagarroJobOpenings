@@ -7,6 +7,12 @@
     "test": "jest",
     "start": "node app.js"
   },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -20,6 +26,7 @@
   },
   "devDependencies": {
     "jest": "^24.9.0",
-    "nodemon": "^1.19.2"
+    "nodemon": "^1.19.2",
+    "supertest": "^4.0.2"
   }
 }
