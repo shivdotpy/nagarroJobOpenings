@@ -3,12 +3,14 @@ const mongoose = require("mongoose");
 const jobModel = mongoose.Schema(
   {
     title: String,
-    skills: Array,
+    mandatorySkills: Array,
+    goodToHaveSkills: Array,
     location: String,
     jobType: String,
     description: String,
     noOfPositions: Number,
-    experienceRequired: String
+    experienceRequired: String,
+    postBy: String
   },
   {
     timestamps: true

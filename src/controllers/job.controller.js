@@ -6,9 +6,11 @@ module.exports.add = (req, res) => {
     description: req.body.description,
     jobType: req.body.jobType,
     location: req.body.location,
-    skills: req.body.skills,
+    mandatorySkills: req.body.mandatorySkills,
+    goodToHaveSkills: req.body.goodToHaveSkills,
     noOfPositions: req.body.noOfPositions,
-    experienceRequired: req.body.experienceRequired
+    experienceRequired: req.body.experienceRequired,
+    postBy: req.userId
   });
 
   Job.save((err, savedJob) => {
@@ -46,7 +48,8 @@ module.exports.getLatestJobs = (req, res) => {
       } else {
         res.status(200).send({
           error: false,
-          data: results
+          data: results,
+          message: results.length ? "Jobs found" : "No jobs available"
         });
       }
     }
@@ -97,7 +100,8 @@ module.exports.editJobs = (req, res) => {
       description: req.body.description,
       jobType: req.body.jobType,
       location: req.body.location,
-      skills: req.body.skills,
+      mandatorySkills: req.body.mandatorySkills,
+      goodToHaveSkills: req.body.goodToHaveSkills,
       noOfPositions: req.body.noOfPositions,
       experienceRequired: req.body.experienceRequired
     },
