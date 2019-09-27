@@ -1,4 +1,5 @@
 const skillModel = require("../models/skills.model");
+const jobModel = require("../models/job.model");
 
 module.exports.addSkill = (req, res) => {
   if (!req.body.name) {
@@ -110,23 +111,61 @@ module.exports.editSkill = (req, res) => {
 };
 
 module.exports.deleteSkill = (req, res) => {
-  skillModel.findByIdAndDelete(req.params.skillId, (err, skillDeleted) => {
+  skillModel.findOne({ _id: req.params.skillId }, (err, skill) => {
     if (err) {
       return res.status(500).send({
         error: true,
-        message: "Error while deleting skill",
+        message: "Error while finding skill",
         data: err
       });
-    } else if (!skillDeleted) {
+    } else if (!skill) {
       return res.status(403).send({
         error: true,
         message: "No skill found with this ID"
       });
     } else {
-      return res.status(200).send({
-        error: false,
-        message: "Skill deleted successfully"
-      });
+      jobModel.find(
+        {
+          $or: [
+            { mandatorySkills: skill.name },
+            { goodToHaveSkills: skill.name }
+          ]
+        },
+        (err, jobFound) => {
+          if (err) {
+            return res.status(500).send({
+              error: true,
+              message: "Error while finding Job with the skill",
+              data: err
+            });
+          } else if (!jobFound.length) {
+            skill.remove((err, skillDeleted) => {
+              if (err) {
+                return res.status(500).send({
+                  error: true,
+                  message: "Error while deleting skill",
+                  data: err
+                });
+              } else if (!skillDeleted) {
+                return res.status(403).send({
+                  error: true,
+                  message: "No skill found with this ID"
+                });
+              } else {
+                return res.status(200).send({
+                  error: false,
+                  message: "Skill deleted successfully"
+                });
+              }
+            });
+          } else {
+            return res.status(403).send({
+              error: true,
+              message: "This skill is already associated with some jobs"
+            });
+          }
+        }
+      );
     }
   });
 };
