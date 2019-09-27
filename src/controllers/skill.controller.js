@@ -135,7 +135,7 @@ module.exports.deleteSkill = (req, res) => {
           if (err) {
             return res.status(500).send({
               error: true,
-              message: "Error while finding Job with the skill",
+              message: "Error while finding Job with this skill",
               data: err
             });
           } else if (!jobFound.length) {

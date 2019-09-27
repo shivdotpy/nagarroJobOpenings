@@ -1,4 +1,5 @@
 const locationModel = require("../models/location.model");
+const jobModel = require("../models/job.model");
 
 module.exports.addLocation = (req, res) => {
   if (!req.body.name) {
@@ -109,26 +110,58 @@ module.exports.editLocation = (req, res) => {
 };
 
 module.exports.deleteLocation = (req, res) => {
-  locationModel.findOneAndRemove(
-    { _id: req.params.locationId },
-    (err, locationDeleted) => {
-      if (err) {
-        return res.status(500).send({
-          error: true,
-          message: "Error while deleting location",
-          data: err
-        });
-      } else if (!locationDeleted) {
-        return res.status(403).send({
-          error: true,
-          message: "No location found with this ID"
-        });
-      } else {
-        return res.status(200).send({
-          error: false,
-          message: "Location deleted successfully"
-        });
-      }
+  locationModel.findOne({ _id: req.params.locationId }, (err, location) => {
+    if (err) {
+      return res.status(500).send({
+        error: true,
+        message: "Error while finding location",
+        data: err
+      });
+    } else if (!location) {
+      return res.status(403).send({
+        error: true,
+        message: "No location found with this ID"
+      });
+    } else {
+      jobModel.find(
+        {
+          location: location.name
+        },
+        (err, jobFound) => {
+          if (err) {
+            return res.status(500).send({
+              error: true,
+              message: "Error while finding Job with this location",
+              data: err
+            });
+          } else if (!jobFound.length) {
+            location.remove((err, locationDeleted) => {
+              if (err) {
+                return res.status(500).send({
+                  error: true,
+                  message: "Error while deleting location",
+                  data: err
+                });
+              } else if (!locationDeleted) {
+                return res.status(403).send({
+                  error: true,
+                  message: "No location found with this ID"
+                });
+              } else {
+                return res.status(200).send({
+                  error: false,
+                  message: "Location deleted successfully"
+                });
+              }
+            });
+          } else {
+            return res.status(403).send({
+              error: true,
+              message: "This location is already associated with some jobs"
+            });
+          }
+        }
+      );
     }
-  );
+  });
 };
