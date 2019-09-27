@@ -118,7 +118,7 @@ module.exports.deleteLocation = (req, res) => {
           message: "Error while deleting location",
           data: err
         });
-      } else if (!skillDeleted) {
+      } else if (!locationDeleted) {
         return res.status(403).send({
           error: true,
           message: "No location found with this ID"
