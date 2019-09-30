@@ -146,7 +146,7 @@ module.exports.getReferalsByUserId = (req, res) => {
   });
 };
 
-module.exports.editReferalByUserId = (req, res) => {
+module.exports.editReferalByUserId = async (req, res) => {
   if (!req.body.name) {
     return res.status(400).send({
       error: true,
@@ -168,18 +168,15 @@ module.exports.editReferalByUserId = (req, res) => {
     });
   }
 
-  if (!req.body.resume) {
-    return res.status(400).send({
-      error: true,
-      message: "Resume required"
-    });
-  }
-
   if (!req.body.jobId) {
     return res.status(400).send({
       error: true,
       message: "Job Id required"
     });
+  }
+
+  if (!req.body.resume) {
+    const referal = await referModel.findById(referId);
   }
 
   const referId = req.params.referId;
@@ -191,7 +188,7 @@ module.exports.editReferalByUserId = (req, res) => {
       name: req.body.name,
       email: req.body.email,
       mobile: req.body.mobile,
-      resume: req.body.resume
+      resume: req.body.resume ? req.body.resume : referal.resume
     },
     (err, referalUpdated) => {
       if (err) {
