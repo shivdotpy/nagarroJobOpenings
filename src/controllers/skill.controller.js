@@ -3,7 +3,7 @@ const jobModel = require("../models/job.model");
 
 module.exports.addSkill = (req, res) => {
   if (!req.body.name) {
-    return res.status(403).send({
+    return res.status(400).send({
       error: true,
       message: "Skill name required"
     });
@@ -20,7 +20,7 @@ module.exports.addSkill = (req, res) => {
         });
       } else if (skillFound) {
         console.log(skillFound);
-        return res.status(403).send({
+        return res.status(400).send({
           error: true,
           message: "Skill already available with this name"
         });
@@ -68,7 +68,7 @@ module.exports.getAllSkills = (req, res) => {
 
 module.exports.editSkill = (req, res) => {
   if (!req.body.name) {
-    return res.status(403).send({
+    return res.status(400).send({
       error: true,
       message: "Skill name required"
     });
@@ -83,7 +83,7 @@ module.exports.editSkill = (req, res) => {
         data: err
       });
     } else if (skillFound) {
-      return res.status(403).send({
+      return res.status(400).send({
         error: true,
         message: "Skill name already exists"
       });
@@ -119,7 +119,7 @@ module.exports.deleteSkill = (req, res) => {
         data: err
       });
     } else if (!skill) {
-      return res.status(403).send({
+      return res.status(404).send({
         error: true,
         message: "No skill found with this ID"
       });
@@ -147,7 +147,7 @@ module.exports.deleteSkill = (req, res) => {
                   data: err
                 });
               } else if (!skillDeleted) {
-                return res.status(403).send({
+                return res.status(404).send({
                   error: true,
                   message: "No skill found with this ID"
                 });
@@ -159,7 +159,7 @@ module.exports.deleteSkill = (req, res) => {
               }
             });
           } else {
-            return res.status(403).send({
+            return res.status(404).send({
               error: true,
               message: "This skill is already associated with some jobs"
             });

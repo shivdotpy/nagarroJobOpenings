@@ -9,4 +9,6 @@ router.post("", referController.addRefer);
 
 router.get("/:jobId", referController.getReferalsByJobId);
 
+router.patch("/status/:referId", referController.updateReferalStatus);
+
 module.exports = router;
