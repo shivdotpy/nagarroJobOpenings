@@ -125,3 +125,23 @@ module.exports.getReferalsByJobId = (req, res) => {
     }
   );
 };
+
+module.exports.getReferalsByUserId = (req, res) => {
+  referModel.find({ referBy: req.userId }, (err, referalsFound) => {
+    if (err) {
+      return res.status(500).send({
+        error: true,
+        message: "Error while finding referals",
+        data: err
+      });
+    } else {
+      return res.status(200).send({
+        error: false,
+        message: referalsFound.length
+          ? "Referals found"
+          : "No referals available",
+        data: referalsFound
+      });
+    }
+  });
+};
