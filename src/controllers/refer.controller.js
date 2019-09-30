@@ -145,3 +145,66 @@ module.exports.getReferalsByUserId = (req, res) => {
     }
   });
 };
+
+module.exports.editReferalByUserId = (req, res) => {
+  if (!req.body.name) {
+    return res.status(400).send({
+      error: true,
+      message: "Name required"
+    });
+  }
+
+  if (!req.body.mobile) {
+    return res.status(400).send({
+      error: true,
+      message: "Mobile required"
+    });
+  }
+
+  if (!req.body.email) {
+    return res.status(400).send({
+      error: true,
+      message: "Email required"
+    });
+  }
+
+  if (!req.body.resume) {
+    return res.status(400).send({
+      error: true,
+      message: "Resume required"
+    });
+  }
+
+  if (!req.body.jobId) {
+    return res.status(400).send({
+      error: true,
+      message: "Job Id required"
+    });
+  }
+
+  const referId = req.params.referId;
+  referModel.findByIdAndUpdate(
+    referId,
+    {
+      jobId: req.body.jobId,
+      referBy: req.userId,
+      name: req.body.name,
+      email: req.body.email,
+      mobile: req.body.mobile,
+      resume: req.body.resume
+    },
+    (err, referalUpdated) => {
+      if (err) {
+        return res.status(500).send({
+          error: true,
+          message: "Error while saving referal"
+        });
+      } else {
+        return res.status(200).send({
+          error: false,
+          message: "Referal saved successfully"
+        });
+      }
+    }
+  );
+};
