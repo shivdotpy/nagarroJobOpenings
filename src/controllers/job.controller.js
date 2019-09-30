@@ -67,7 +67,7 @@ module.exports.deleteJob = (req, res) => {
         data: err
       });
     } else if (!jobFound) {
-      return res.status(403).send({
+      return res.status(404).send({
         error: true,
         message: "No job available with this ID"
       });

@@ -3,7 +3,7 @@ const jobModel = require("../models/job.model");
 
 module.exports.addLocation = (req, res) => {
   if (!req.body.name) {
-    return res.status(403).send({
+    return res.status(400).send({
       error: true,
       message: "Location name required"
     });
@@ -19,7 +19,7 @@ module.exports.addLocation = (req, res) => {
           data: err
         });
       } else if (locationFound) {
-        return res.status(403).send({
+        return res.status(400).send({
           error: true,
           message: "Location already available with this name"
         });
@@ -67,7 +67,7 @@ module.exports.getAllLocations = (req, res) => {
 
 module.exports.editLocation = (req, res) => {
   if (!req.body.name) {
-    return res.status(403).send({
+    return res.status(400).send({
       error: true,
       message: "Location name required"
     });
@@ -82,7 +82,7 @@ module.exports.editLocation = (req, res) => {
         data: err
       });
     } else if (locationFound) {
-      return res.status(403).send({
+      return res.status(400).send({
         error: true,
         message: "Location name already exists"
       });
@@ -118,7 +118,7 @@ module.exports.deleteLocation = (req, res) => {
         data: err
       });
     } else if (!location) {
-      return res.status(403).send({
+      return res.status(404).send({
         error: true,
         message: "No location found with this ID"
       });
@@ -143,7 +143,7 @@ module.exports.deleteLocation = (req, res) => {
                   data: err
                 });
               } else if (!locationDeleted) {
-                return res.status(403).send({
+                return res.status(404).send({
                   error: true,
                   message: "No location found with this ID"
                 });
@@ -155,7 +155,7 @@ module.exports.deleteLocation = (req, res) => {
               }
             });
           } else {
-            return res.status(403).send({
+            return res.status(400).send({
               error: true,
               message: "This location is already associated with some jobs"
             });

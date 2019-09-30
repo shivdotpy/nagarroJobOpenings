@@ -4,13 +4,13 @@ const userModel = require("../models/user.model");
 
 module.exports.signup = (req, res) => {
   if (!req.body.email) {
-    return res.status(403).send({
+    return res.status(400).send({
       error: true,
       message: "Email is required"
     });
   }
   if (!req.body.password) {
-    return res.status(403).send({
+    return res.status(400).send({
       error: true,
       message: "Password is required"
     });
@@ -25,7 +25,7 @@ module.exports.signup = (req, res) => {
         data: err
       });
     } else if (userFound) {
-      return res.status(403).send({
+      return res.status(400).send({
         error: true,
         message: "User already exists"
       });
@@ -64,13 +64,13 @@ module.exports.signup = (req, res) => {
 
 module.exports.login = (req, res) => {
   if (!req.body.email) {
-    return res.status(403).send({
+    return res.status(400).send({
       error: true,
       message: "Email is required"
     });
   }
   if (!req.body.password) {
-    return res.status(403).send({
+    return res.status(400).send({
       error: true,
       message: "Password is required"
     });
