@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const jobModel = mongoose.Schema(
   {
+    _id: Number,
     title: String,
     mandatorySkills: Array,
     goodToHaveSkills: Array,
@@ -13,7 +14,8 @@ const jobModel = mongoose.Schema(
     postBy: String
   },
   {
-    timestamps: true
+    timestamps: true,
+    _id: false
   }
 );
 

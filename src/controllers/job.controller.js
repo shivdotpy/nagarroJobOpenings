@@ -2,6 +2,7 @@ const jobModel = require("../models/job.model");
 
 module.exports.add = (req, res) => {
   const Job = new jobModel({
+    _id: Math.floor(100000 + Math.random() * 900000),
     title: req.body.title,
     description: req.body.description,
     jobType: req.body.jobType,
