@@ -74,14 +74,14 @@ module.exports.editLocation = (req, res) => {
   }
 
   const locationId = req.params.locationId;
-  locationModel.findOne({ _id: locationId }, (err, locationFound) => {
+  locationModel.findOne({ name: req.body.name }, (err, locationFound) => {
     if (err) {
       return res.status(500).send({
         error: true,
         message: "Error while finding location",
         data: err
       });
-    } else if (locationFound) {
+    } else if (locationFound && locationFound.name) {
       return res.status(400).send({
         error: true,
         message: "Location name already exists"

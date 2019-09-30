@@ -75,14 +75,14 @@ module.exports.editSkill = (req, res) => {
   }
 
   const skillId = req.params.skillId;
-  skillModel.findOne({ _id: skillId }, (err, skillFound) => {
+  skillModel.findOne({ name: req.body.name }, (err, skillFound) => {
     if (err) {
       return res.status(500).send({
         error: true,
         message: "Error while finding skill",
         data: err
       });
-    } else if (skillFound) {
+    } else if (skillFound && skillFound.name) {
       return res.status(400).send({
         error: true,
         message: "Skill name already exists"
