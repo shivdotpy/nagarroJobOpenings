@@ -127,3 +127,32 @@ module.exports.login = (req, res) => {
     }
   });
 };
+
+module.exports.getUserInfoByToken = (req, res) => {
+  userModel.findById(req.userId, { role: 1, email: 1 }, (err, userFound) => {
+    if (err) {
+      return res.status(500).send({
+        error: true,
+        message: "Error while getting user by Token"
+      });
+    } else if (!userFound) {
+      return res.status(400).send({
+        error: true,
+        message: "No User found"
+      });
+    } else {
+      let firstName = userFound.email.split("@")[0].split(".")[0];
+      let lastName = userFound.email.split("@")[0].split(".")[1];
+      let data = {};
+      data.firstName = firstName;
+      data.lastName = lastName;
+      data.role = userFound.role;
+      data.email = userFound.email;
+      return res.status(200).send({
+        error: false,
+        message: "User found",
+        data: data
+      });
+    }
+  });
+};
