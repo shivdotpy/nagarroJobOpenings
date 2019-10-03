@@ -1,3 +1,5 @@
+const fs = require("fs");
+const xlsx = require("xlsx");
 const locationModel = require("../models/location.model");
 const jobModel = require("../models/job.model");
 
@@ -42,6 +44,51 @@ module.exports.addLocation = (req, res) => {
               message: "Location saved successfully"
             });
           }
+        });
+      }
+    }
+  );
+};
+
+module.exports.addBulkLocation = (req, res) => {
+  if (!req.body.file) {
+    return res.status(400).send({
+      error: true,
+      message: "file required"
+    });
+  }
+
+  fs.writeFile(
+    "src/temp/temp.xlsx",
+    req.body.file,
+    { encoding: "base64" },
+    function(err) {
+      if (err) {
+        return res.status(500).send({
+          error: true,
+          message: "Error while creating xlsx file",
+          data: err
+        });
+      } else {
+        const workbook = xlsx.readFile("src/temp/temp.xlsx");
+        const sheetData = xlsx.utils.sheet_to_json(
+          workbook.Sheets[workbook.SheetNames[0]]
+        );
+
+        sheetData.forEach(sheetData => {
+          const Location = new locationModel({
+            _id: Math.floor(100000 + Math.random() * 900000),
+            name: sheetData.name
+          });
+
+          Location.save(err => {
+            console.log(err);
+          });
+        });
+
+        res.send({
+          error: false,
+          message: "Locations saved successfully"
         });
       }
     }
