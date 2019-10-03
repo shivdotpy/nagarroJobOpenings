@@ -10,7 +10,9 @@ module.exports.addSkill = (req, res) => {
   }
 
   skillModel.findOne(
-    { name: req.body.name.toLowerCase() },
+    {
+      name: req.body.name.toLowerCase()
+    },
     (err, skillFound) => {
       if (err) {
         return res.status(500).send({
@@ -26,6 +28,7 @@ module.exports.addSkill = (req, res) => {
         });
       } else {
         const skill = new skillModel({
+          _id: Math.floor(100000 + Math.random() * 900000),
           name: req.body.name
         });
 

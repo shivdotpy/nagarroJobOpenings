@@ -25,6 +25,7 @@ module.exports.addLocation = (req, res) => {
         });
       } else {
         const location = new locationModel({
+          _id: Math.floor(100000 + Math.random() * 900000),
           name: req.body.name
         });
 
