@@ -7,6 +7,8 @@ router.use(authMiddleware);
 
 router.post("/add", skillController.addSkill);
 
+router.post("/bulk", skillController.addBulkSkills);
+
 router.get("/all", skillController.getAllSkills);
 
 router.put("/edit/:skillId", skillController.editSkill);

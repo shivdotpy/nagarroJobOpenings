@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const skillModel = mongoose.Schema(
   {
     _id: Number,
-    name: { type: String, lowercase: true }
+    name: { type: String, lowercase: true, unique: true }
   },
   {
     timestamps: true,
