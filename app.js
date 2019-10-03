@@ -18,12 +18,10 @@ app.use(cors());
 
 // DB connection
 // mongodb://shiv:shiv1234567890@ds163745.mlab.com:63745/nagarro
+// mongodb://shiv:shiv123456789@ds235328.mlab.com:35328/nagarrotest
 mongoose.connect(
-  "mongodb://shiv:shiv1234567890@ds163745.mlab.com:63745/nagarro",
-  { useNewUrlParser: true },
-  () => {
-    console.log("DB connected...");
-  }
+  "mongodb://shiv:shiv123456789@ds235328.mlab.com:35328/nagarrotest",
+  { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -39,6 +37,6 @@ app.use("/refer", referRoute);
 app.use("/skill", skillRoute);
 app.use("/location", locationRoute);
 
-app.listen(PORT, () => {
-  console.log(`Listning on port ${PORT}`);
-});
+app.listen(PORT);
+
+module.exports = app;

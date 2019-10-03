@@ -112,8 +112,10 @@ module.exports.login = (req, res) => {
             message: "Logged in successfully",
             data: {
               token: token,
-              firstName: firstName,
-              lastName: lastName ? lastName : null,
+              firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
+              lastName: lastName
+                ? lastName.charAt(0).toUpperCase() + lastName.slice(1)
+                : null,
               role: userResult.role
             }
           });
@@ -144,8 +146,10 @@ module.exports.getUserInfoByToken = (req, res) => {
       let firstName = userFound.email.split("@")[0].split(".")[0];
       let lastName = userFound.email.split("@")[0].split(".")[1];
       let data = {};
-      data.firstName = firstName;
-      data.lastName = lastName;
+      data.firstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+      data.lastName = lastName
+        ? lastName.charAt(0).toUpperCase() + lastName.slice(1)
+        : null;
       data.role = userFound.role;
       data.email = userFound.email;
       return res.status(200).send({
