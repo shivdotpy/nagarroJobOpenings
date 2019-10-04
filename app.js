@@ -4,6 +4,9 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
+// Swagger
+const swagger = require("./src/swagger/swagger");
+
 // Routes
 const userRoute = require("./src/routers/user.router");
 const jobRoute = require("./src/routers/job.router");
@@ -36,6 +39,7 @@ app.use("/job", jobRoute);
 app.use("/refer", referRoute);
 app.use("/skill", skillRoute);
 app.use("/location", locationRoute);
+app.use("/swagger", swagger.router);
 
 app.listen(PORT);
 

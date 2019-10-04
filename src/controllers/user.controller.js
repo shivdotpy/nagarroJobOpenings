@@ -2,6 +2,39 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/user.model");
 
+/**
+ * @swagger
+ * definitions:
+ *   Signup:
+ *     type: object
+ *     properties:
+ *       email:
+ *         type: string
+ *       password:
+ *         type: string
+ */
+
+/**
+ * @swagger
+ * /user/signup:
+ *   post:
+ *     tags:
+ *       - User
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: skill
+ *         description: Signup object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Signup'
+ *     responses:
+ *       200:
+ *         description: New User
+ *         schema:
+ *           $ref: '#/definitions/Signup'
+ */
 module.exports.signup = (req, res) => {
   if (!req.body.email) {
     return res.status(400).send({
