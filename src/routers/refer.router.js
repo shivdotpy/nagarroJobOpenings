@@ -7,12 +7,14 @@ router.use(authMiddleware);
 
 router.post("", referController.addRefer);
 
-router.put("/edit/:referId", referController.editReferalByUserId);
-
 router.get("/userReferals", referController.getReferalsByUserId);
 
 router.get("/:jobId", referController.getReferalsByJobId);
 
+router.put("/edit/:referId", referController.editReferalByUserId);
+
 router.patch("/status/:referId", referController.updateReferalStatus);
+
+router.get("/resume/:referId", referController.getReferalResumeById);
 
 module.exports = router;

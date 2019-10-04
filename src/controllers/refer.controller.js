@@ -176,3 +176,26 @@ module.exports.editReferalByUserId = async (req, res) => {
     }
   });
 };
+
+module.exports.getReferalResumeById = (req, res) => {
+  referModel.findById(req.params.referId, (err, referalFound) => {
+    if (err) {
+      return res.status(500).send({
+        error: true,
+        message: "Error while getting referal",
+        data: err
+      });
+    } else if (!referalFound) {
+      return res.status(400).send({
+        error: true,
+        message: "No referal found with this id"
+      });
+    } else {
+      return res.status(200).send({
+        error: false,
+        message: "Resume found",
+        data: referalFound.resume
+      });
+    }
+  });
+};
