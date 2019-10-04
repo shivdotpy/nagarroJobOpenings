@@ -147,61 +147,32 @@ module.exports.getReferalsByUserId = (req, res) => {
 };
 
 module.exports.editReferalByUserId = async (req, res) => {
-  if (!req.body.name) {
-    return res.status(400).send({
-      error: true,
-      message: "Name required"
-    });
-  }
-
-  if (!req.body.mobile) {
-    return res.status(400).send({
-      error: true,
-      message: "Mobile required"
-    });
-  }
-
-  if (!req.body.email) {
-    return res.status(400).send({
-      error: true,
-      message: "Email required"
-    });
-  }
-
-  if (!req.body.jobId) {
-    return res.status(400).send({
-      error: true,
-      message: "Job Id required"
-    });
-  }
+  const referId = req.params.referId;
+  let referal;
 
   if (!req.body.resume) {
-    const referal = await referModel.findById(referId);
+    referal = await referModel.findById(referId);
   }
 
-  const referId = req.params.referId;
-  referModel.findByIdAndUpdate(
-    referId,
-    {
-      jobId: req.body.jobId,
-      referBy: req.userId,
-      name: req.body.name,
-      email: req.body.email,
-      mobile: req.body.mobile,
-      resume: req.body.resume ? req.body.resume : referal.resume
-    },
-    (err, referalUpdated) => {
-      if (err) {
-        return res.status(500).send({
-          error: true,
-          message: "Error while saving referal"
-        });
-      } else {
-        return res.status(200).send({
-          error: false,
-          message: "Referal saved successfully"
-        });
-      }
+  const requestBody = {
+    resume: req.body.resume ? req.body.resume : referal.resume
+  };
+
+  Object.keys(req.body).map(key => {
+    requestBody[key] = req.body[key];
+  });
+
+  referModel.findByIdAndUpdate(referId, requestBody, err => {
+    if (err) {
+      return res.status(500).send({
+        error: true,
+        message: "Error while saving referal"
+      });
+    } else {
+      return res.status(200).send({
+        error: false,
+        message: "Referal saved successfully"
+      });
     }
-  );
+  });
 };
