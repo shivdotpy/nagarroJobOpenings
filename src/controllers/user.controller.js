@@ -95,6 +95,27 @@ module.exports.signup = (req, res) => {
   });
 };
 
+/**
+ * @swagger
+ * /user/login:
+ *   post:
+ *     tags:
+ *       - User
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: skill
+ *         description: Signup object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Signup'
+ *     responses:
+ *       200:
+ *         description: New User
+ *         schema:
+ *           $ref: '#/definitions/Signup'
+ */
 module.exports.login = (req, res) => {
   if (!req.body.email) {
     return res.status(400).send({
@@ -163,6 +184,16 @@ module.exports.login = (req, res) => {
   });
 };
 
+/**
+ * @swagger
+ * /user/info:
+ *   get:
+ *     tags:
+ *       - User
+ *     responses:
+ *       200:
+ *         description: User Info
+ */
 module.exports.getUserInfoByToken = (req, res) => {
   userModel.findById(req.userId, { role: 1, email: 1 }, (err, userFound) => {
     if (err) {

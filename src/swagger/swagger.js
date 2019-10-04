@@ -13,7 +13,7 @@ const options = {
       }
     ],
     schemes: ["https"],
-    host: "nagaroo-openings.herokuapp.com",
+    host: "nagarro-openings.herokuapp.com",
     basePath: ""
   },
   apis: ["./src/controllers/user.controller.js"]
