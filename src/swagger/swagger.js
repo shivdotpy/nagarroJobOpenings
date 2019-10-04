@@ -16,7 +16,10 @@ const options = {
     host: "nagarro-openings.herokuapp.com",
     basePath: ""
   },
-  apis: ["./src/controllers/user.controller.js"]
+  apis: [
+    "./src/controllers/user.controller.js",
+    "./src/controllers/skill.controller.js"
+  ]
 };
 
 const swaggerJSDoc = require("swagger-jsdoc");

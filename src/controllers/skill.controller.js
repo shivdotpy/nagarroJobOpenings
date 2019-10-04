@@ -3,6 +3,37 @@ const xlsx = require("xlsx");
 const skillModel = require("../models/skills.model");
 const jobModel = require("../models/job.model");
 
+/**
+ * @swagger
+ * definitions:
+ *   Skill:
+ *     type: object
+ *     properties:
+ *       name:
+ *         type: string
+ */
+
+/**
+ * @swagger
+ * /skill/add:
+ *   post:
+ *     tags:
+ *       - Skill
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: skill
+ *         description: Skill object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Skill'
+ *     responses:
+ *       200:
+ *         description: New Skill
+ *         schema:
+ *           $ref: '#/definitions/Skill'
+ */
 module.exports.addSkill = (req, res) => {
   if (!req.body.name) {
     return res.status(400).send({
@@ -53,6 +84,37 @@ module.exports.addSkill = (req, res) => {
   );
 };
 
+/**
+ * @swagger
+ * definitions:
+ *   Bulk:
+ *     type: object
+ *     properties:
+ *       file:
+ *         type: string
+ */
+
+/**
+ * @swagger
+ * /skill/bulk:
+ *   post:
+ *     tags:
+ *       - Skill
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: skill
+ *         description: Skill object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Bulk'
+ *     responses:
+ *       200:
+ *         description: New Skills bulk
+ *         schema:
+ *           $ref: '#/definitions/Bulk'
+ */
 module.exports.addBulkSkills = (req, res) => {
   if (!req.body.file) {
     return res.status(400).send({
@@ -98,6 +160,18 @@ module.exports.addBulkSkills = (req, res) => {
   );
 };
 
+/**
+ * @swagger
+ * /skill/all:
+ *   get:
+ *     tags:
+ *       - Skill
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: New Skills bulk
+ */
 module.exports.getAllSkills = (req, res) => {
   skillModel.find({}, (err, skillsArr) => {
     if (err) {
@@ -116,6 +190,30 @@ module.exports.getAllSkills = (req, res) => {
   });
 };
 
+/**
+ * @swagger
+ * /skill/edit:
+ *   post:
+ *     tags:
+ *       - Skill
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: skill
+ *         description: Skill object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Skill'
+ *       - name: id
+ *         in: parameter
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: New Skill
+ *         schema:
+ *           $ref: '#/definitions/Skill'
+ */
 module.exports.editSkill = (req, res) => {
   if (!req.body.name) {
     return res.status(400).send({
