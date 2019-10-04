@@ -6,7 +6,7 @@ const referModel = mongoose.Schema({
   mobile: String,
   email: String,
   resume: String,
-  status: { type: String, default: "open" },
+  status: { type: Number, default: 1 },
   referBy: String
 });
 
