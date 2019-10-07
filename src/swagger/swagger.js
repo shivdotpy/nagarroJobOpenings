@@ -10,6 +10,9 @@ const options = {
     tags: [
       {
         name: "User"
+      },
+      {
+        name: "Job"
       }
     ],
     schemes: ["https"],
@@ -18,7 +21,8 @@ const options = {
   },
   apis: [
     "./src/controllers/user.controller.js",
-    "./src/controllers/skill.controller.js"
+    "./src/controllers/skill.controller.js",
+    "./src/controllers/job.controller.js"
   ]
 };
 

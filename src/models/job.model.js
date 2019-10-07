@@ -8,6 +8,7 @@ const jobModel = mongoose.Schema(
     goodToHaveSkills: Array,
     location: Array,
     jobType: String,
+    type: String,
     description: String,
     noOfPositions: Number,
     experienceRequired: String,

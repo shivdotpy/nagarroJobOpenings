@@ -1,11 +1,59 @@
 const jobModel = require("../models/job.model");
 
+/**
+ * @swagger
+ * definitions:
+ *   Job:
+ *     type: object
+ *     properties:
+ *       title:
+ *         type: string
+ *       description:
+ *         type: string
+ *       jobType:
+ *         type: string
+ *       type:
+ *         type: string
+ *       location:
+ *         type: string
+ *       mandatorySkills:
+ *         type: string
+ *       goodToHaveSkills:
+ *         type: string
+ *       noOfPositions:
+ *         type: number
+ *       experienceRequired:
+ *         type: string
+ */
+
+/**
+ * @swagger
+ * /job/add:
+ *   post:
+ *     tags:
+ *       - Job
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: job
+ *         description: Job object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Job'
+ *     responses:
+ *       200:
+ *         description: New Job
+ *         schema:
+ *           $ref: '#/definitions/Job'
+ */
 module.exports.add = (req, res) => {
   const Job = new jobModel({
     _id: Math.floor(100000 + Math.random() * 900000),
     title: req.body.title,
     description: req.body.description,
     jobType: req.body.jobType,
+    type: req.body.type,
     location: req.body.location,
     mandatorySkills: req.body.mandatorySkills,
     goodToHaveSkills: req.body.goodToHaveSkills,
