@@ -7,6 +7,8 @@ router.use(authMiddleware);
 
 router.post("/add", jobController.add);
 
+router.post("/bulk", jobController.bulkUpload);
+
 router.get("/latest", jobController.getLatestJobs);
 
 router.delete("/delete/:id", jobController.deleteJob);

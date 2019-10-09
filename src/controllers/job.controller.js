@@ -1,4 +1,6 @@
 const jobModel = require("../models/job.model");
+const fs = require("fs");
+const xlsx = require("xlsx");
 
 /**
  * @swagger
@@ -71,6 +73,58 @@ module.exports.add = (req, res) => {
       });
     } else {
       return res.status(201).send({
+        error: false,
+        message: "Job saved successfully"
+      });
+    }
+  });
+};
+
+module.exports.bulkUpload = (req, res) => {
+  if (!req.body.file) {
+    return res.status(400).send({
+      error: true,
+      message: "file required"
+    });
+  }
+
+  let file = req.body.file.split(";base64,")[1];
+  fs.writeFile("src/temp/temp.xlsx", file, { encoding: "base64" }, function(
+    err
+  ) {
+    if (err) {
+      return res.status(500).send({
+        error: true,
+        message: "Error while creating xlsx file",
+        data: err
+      });
+    } else {
+      const workbook = xlsx.readFile("src/temp/temp.xlsx");
+      const sheetData = xlsx.utils.sheet_to_json(
+        workbook.Sheets[workbook.SheetNames[0]]
+      );
+
+      sheetData.forEach(sheet => {
+        const Job = new jobModel({
+          _id: Math.floor(100000 + Math.random() * 900000),
+          title: sheet.title,
+          description: sheet.description,
+          jobType: sheet.jobType,
+          type: sheet.type,
+          location: sheet.location.split(","),
+          mandatorySkills: sheet.mandatorySkills.split(","),
+          goodToHaveSkills: sheet.goodToHaveSkills.split(","),
+          noOfPositions: sheet.noOfPositions,
+          experienceRequired: sheet.experienceRequired,
+          postBy: req.userId
+        });
+
+        Job.save(err => {
+          console.log("job saved");
+        });
+      });
+
+      res.send({
         error: false,
         message: "Job saved successfully"
       });
