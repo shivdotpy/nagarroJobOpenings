@@ -13,6 +13,7 @@ const jobRoute = require("./src/routers/job.router");
 const referRoute = require("./src/routers/refer.router");
 const skillRoute = require("./src/routers/skill.router");
 const locationRoute = require("./src/routers/location.router");
+const dashboardRoute = require("./src/routers/dashboard.router");
 
 const PORT = process.env.PORT || 3000;
 
@@ -40,6 +41,7 @@ app.use("/refer", referRoute);
 app.use("/skill", skillRoute);
 app.use("/location", locationRoute);
 app.use("/swagger", swagger.router);
+app.use("/api", dashboardRoute);
 
 app.listen(PORT);
 
