@@ -22,7 +22,8 @@ const options = {
   apis: [
     "./src/controllers/user.controller.js",
     "./src/controllers/skill.controller.js",
-    "./src/controllers/job.controller.js"
+    "./src/controllers/job.controller.js",
+    "./src/controllers/dashboard.controller.js"
   ]
 };
 

@@ -14,7 +14,7 @@ const jobModel = require("../models/job.model");
  * /api/dashboard:
  *   get:
  *     tags:
- *       - Job
+ *       - Dashboard
  *     produces:
  *       - application/json
  *     responses:
