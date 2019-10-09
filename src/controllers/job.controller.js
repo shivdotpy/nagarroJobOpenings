@@ -80,6 +80,37 @@ module.exports.add = (req, res) => {
   });
 };
 
+/**
+ * @swagger
+ * definitions:
+ *   Bulk:
+ *     type: object
+ *     properties:
+ *       file:
+ *         type: string
+ */
+
+/**
+ * @swagger
+ * /job/bulk:
+ *   post:
+ *     tags:
+ *       - Job
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: job
+ *         description: Job object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Bulk'
+ *     responses:
+ *       200:
+ *         description: New Job
+ *         schema:
+ *           $ref: '#/definitions/Bulk'
+ */
 module.exports.bulkUpload = (req, res) => {
   if (!req.body.file) {
     return res.status(400).send({
