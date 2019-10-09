@@ -81,7 +81,7 @@ module.exports.addBulkLocation = (req, res) => {
           name: sheet.name
         });
 
-        location.save(err => {
+        Location.save(err => {
           console.log("saved");
         });
       });
