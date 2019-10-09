@@ -25,13 +25,12 @@ const jobModel = require("../models/job.model");
  */
 module.exports.getOverview = async (req, res) => {
   const jobs = await jobModel.find({});
-  // frontend
-  // backend
-  // fullstack
   let frontendCount = 0;
   let backendCount = 0;
   let fullstackCount = 0;
   let otherCount = 0;
+  let qaCount = 0;
+  let adminCount = 0;
   jobs.forEach(job => {
     if (job.type === "frontend") {
       frontendCount++;
@@ -39,6 +38,10 @@ module.exports.getOverview = async (req, res) => {
       backendCount++;
     } else if (job.type === "fullstack") {
       fullstackCount++;
+    } else if (job.type === "qa") {
+      qaCount++;
+    } else if (job.type === "admin") {
+      adminCount++;
     } else {
       otherCount++;
     }
@@ -48,6 +51,8 @@ module.exports.getOverview = async (req, res) => {
     frontendCount,
     backendCount,
     fullstackCount,
+    qaCount,
+    adminCount,
     otherCount
   });
 };
