@@ -169,7 +169,7 @@ module.exports.getLatestJobs = (req, res) => {
   let skip = (parseInt(req.query.page) - 1) * parseInt(req.query.count);
 
   jobModel.find(
-    {},
+    { type: req.query.type },
     {},
     { sort: { createdAt: -1 }, limit, skip: skip ? skip : 0 },
     (err, results) => {
@@ -180,11 +180,37 @@ module.exports.getLatestJobs = (req, res) => {
           data: err
         });
       } else {
-        res.status(200).send({
-          error: false,
-          data: results,
-          message: results.length ? "Jobs found" : "No jobs available"
-        });
+        if (results.length) {
+          res.status(200).send({
+            error: false,
+            data: results,
+            message: results.length ? "Jobs found" : "No jobs available"
+          });
+        } else {
+          console.log("yo");
+          jobModel.find(
+            {},
+            {},
+            { sort: { createdAt: -1 }, limit, skip: skip ? skip : 0 },
+            (err, finalResult) => {
+              if (err) {
+                return res.status(500).send({
+                  error: true,
+                  message: "Error while getting job",
+                  data: err
+                });
+              } else {
+                res.status(200).send({
+                  error: false,
+                  data: finalResult,
+                  message: finalResult.length
+                    ? "Jobs found"
+                    : "No jobs available"
+                });
+              }
+            }
+          );
+        }
       }
     }
   );

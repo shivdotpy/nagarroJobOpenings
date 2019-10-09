@@ -7,7 +7,7 @@ const jobModel = mongoose.Schema(
     mandatorySkills: Array,
     goodToHaveSkills: Array,
     location: Array,
-    jobType: String,
+    jobType: { type: String, lowercase: true },
     type: String,
     description: String,
     noOfPositions: Number,
