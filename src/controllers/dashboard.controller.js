@@ -32,15 +32,15 @@ module.exports.getOverview = async (req, res) => {
   let qaCount = 0;
   let adminCount = 0;
   jobs.forEach(job => {
-    if (job.type === "frontend") {
+    if (job.type.toLowerCase() === "frontend") {
       frontendCount++;
-    } else if (job.type === "backend") {
+    } else if (job.type.toLowerCase() === "backend") {
       backendCount++;
-    } else if (job.type === "fullstack") {
+    } else if (job.type.toLowerCase() === "fullstack") {
       fullstackCount++;
-    } else if (job.type === "qa") {
+    } else if (job.type.toLowerCase() === "qa") {
       qaCount++;
-    } else if (job.type === "admin") {
+    } else if (job.type.toLowerCase() === "admin") {
       adminCount++;
     } else {
       otherCount++;
