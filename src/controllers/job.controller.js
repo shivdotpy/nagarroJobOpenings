@@ -24,7 +24,7 @@ const xlsx = require("xlsx");
  *         type: string
  *       noOfPositions:
  *         type: number
- *       experienceRequired:
+ *       experience:
  *         type: string
  */
 
@@ -60,7 +60,7 @@ module.exports.add = (req, res) => {
     mandatorySkills: req.body.mandatorySkills,
     goodToHaveSkills: req.body.goodToHaveSkills,
     noOfPositions: req.body.noOfPositions,
-    experienceRequired: req.body.experienceRequired,
+    experience: req.body.experience,
     postBy: req.userId
   });
 
@@ -146,7 +146,7 @@ module.exports.bulkUpload = (req, res) => {
           mandatorySkills: sheet.mandatorySkills.split(","),
           goodToHaveSkills: sheet.goodToHaveSkills.split(","),
           noOfPositions: sheet.noOfPositions,
-          experienceRequired: sheet.experienceRequired,
+          experience: sheet.experience,
           postBy: req.userId
         });
 
@@ -263,7 +263,7 @@ module.exports.editJobs = (req, res) => {
       mandatorySkills: req.body.mandatorySkills,
       goodToHaveSkills: req.body.goodToHaveSkills,
       noOfPositions: req.body.noOfPositions,
-      experienceRequired: req.body.experienceRequired
+      experience: req.body.experience
     },
     (err, jobUpdated) => {
       if (err) {

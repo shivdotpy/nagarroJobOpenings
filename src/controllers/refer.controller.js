@@ -1,4 +1,6 @@
 const referModel = require("../models/refer.model");
+const nodemailer = require("nodemailer");
+const mailer = require("../mailer/mailer");
 
 module.exports.addRefer = (req, res) => {
   if (!req.body.name) {
@@ -93,6 +95,10 @@ module.exports.updateReferalStatus = (req, res) => {
             data: err
           });
         } else {
+          // Mail to referal person
+
+          mailer.mail(referFound.referBy, "test mail " + req.body.status);
+
           return res.status(200).send({
             error: false,
             message: "Status changes successfully"
