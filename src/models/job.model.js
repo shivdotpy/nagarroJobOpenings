@@ -11,7 +11,7 @@ const jobModel = mongoose.Schema(
     type: String,
     description: String,
     noOfPositions: Number,
-    experienceRequired: String,
+    experience: String,
     postBy: String
   },
   {
