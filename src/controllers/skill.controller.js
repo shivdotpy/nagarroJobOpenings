@@ -123,6 +123,13 @@ module.exports.addBulkSkills = (req, res) => {
     });
   }
 
+  if (!req.body.file.includes("spreadsheet")) {
+    return res.status(400).send({
+      error: true,
+      message: "Only excel file can be used for bulk upload"
+    });
+  }
+
   let file = req.body.file.split(";base64,")[1];
 
   fs.writeFile("src/temp/temp.xlsx", file, { encoding: "base64" }, function(
