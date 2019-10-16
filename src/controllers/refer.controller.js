@@ -227,3 +227,20 @@ module.exports.getReferalResumeById = (req, res) => {
     }
   });
 };
+
+module.exports.getAllReferal = (req, res) => {
+  referModel.find({}, { resume: 0 }, (err, referals) => {
+    if (err) {
+      return res.status(500).send({
+        error: true,
+        message: "Error while finding referals"
+      });
+    } else {
+      return res.status(200).send({
+        error: false,
+        message: referals.length ? "Referals found" : "No referals available",
+        data: referals
+      });
+    }
+  });
+};

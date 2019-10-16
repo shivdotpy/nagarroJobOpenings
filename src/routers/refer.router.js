@@ -7,6 +7,8 @@ router.use(authMiddleware);
 
 router.post("", referController.addRefer);
 
+router.get("/all", referController.getAllReferal);
+
 router.get("/userReferals", referController.getReferalsByUserId);
 
 router.get("/:jobId", referController.getReferalsByJobId);
