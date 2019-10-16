@@ -1,6 +1,8 @@
 const referModel = require("../models/refer.model");
-const nodemailer = require("nodemailer");
 const mailer = require("../mailer/mailer");
+const userModel = require("../models/user.model");
+const fs = require("fs");
+const path = require("path");
 
 module.exports.addRefer = (req, res) => {
   if (!req.body.name) {
@@ -97,7 +99,27 @@ module.exports.updateReferalStatus = (req, res) => {
         } else {
           // Mail to referal person
 
-          mailer.mail(referFound.referBy, "test mail " + req.body.status);
+          userModel.findById(referFound.referBy, (err, user) => {
+            fs.readFile(
+              path.join(
+                __dirname,
+                "..",
+                "mailer",
+                "samples",
+                "referalStatus.html"
+              ),
+              (err, referralHTML) => {
+                mailer.mail(
+                  user.email,
+                  referralHTML
+                    .toString()
+                    .replace("#REFERBYNAME", user.email.split(".")[0])
+                    .replace("#REFERRALNAME", referFound.name)
+                    .replace("#REFERRALSTATUS", req.body.status)
+                );
+              }
+            );
+          });
 
           return res.status(200).send({
             error: false,

@@ -11,9 +11,9 @@ const transporter = nodemailer.createTransport({
 module.exports.mail = (to, message) => {
   const mailOptions = {
     from: "nagarroreferral@gmail.com",
-    to: to,
-    subject: "Your referal status",
-    text: message
+    to: "shivssharma1990@gmail.com",
+    subject: `Your referal status`,
+    html: message
   };
 
   transporter.sendMail(mailOptions, function(error, info) {
