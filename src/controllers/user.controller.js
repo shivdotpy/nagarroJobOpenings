@@ -162,7 +162,7 @@ module.exports.login = (req, res) => {
     } else if (!userResult) {
       return res.status(401).send({
         error: true,
-        message: "Unauthorised Access"
+        message: "Invalid username or password"
       });
     } else {
       bcrypt.compare(req.body.password, userResult.password, function(
@@ -185,7 +185,7 @@ module.exports.login = (req, res) => {
         } else {
           return res.status(401).send({
             error: true,
-            message: "Unauthorised Access"
+            message: "Email Id or password is incorrect"
           });
         }
       });
