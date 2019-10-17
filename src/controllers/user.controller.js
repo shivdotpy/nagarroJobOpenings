@@ -50,71 +50,76 @@ module.exports.signup = (req, res) => {
   }
 
   // check if user already exists or not
-  userModel.findOne({ email: req.body.email }, (err, userFound) => {
-    if (err) {
-      return res.status(500).send({
-        error: true,
-        message: "Error while finding user",
-        data: err
-      });
-    } else if (userFound) {
-      return res.status(400).send({
-        error: true,
-        message: "User already exists"
-      });
-    } else {
-      bcrypt.hash(req.body.password, 10, function(err, hash) {
-        if (err) {
-          return res.status(500).send({
-            error: true,
-            message: "Error while generating hash",
-            data: err
-          });
-        } else {
-          let name = req.body.email.split("@")[0];
-          let firstName = "";
-          let lastName = "";
+  console.log("req.body.email.toLowerCase()", req.body.email.toLowerCase());
 
-          if (name.includes(".")) {
-            firstName =
-              name
-                .split(".")[0]
-                .charAt(0)
-                .toUpperCase() + name.split(".")[0].slice(1);
-            lastName =
-              name
-                .split(".")[1]
-                .charAt(0)
-                .toUpperCase() + name.split(".")[1].slice(1);
+  userModel.findOne(
+    { email: req.body.email.toLowerCase() },
+    (err, userFound) => {
+      if (err) {
+        return res.status(500).send({
+          error: true,
+          message: "Error while finding user",
+          data: err
+        });
+      } else if (userFound) {
+        return res.status(400).send({
+          error: true,
+          message: "User already exists"
+        });
+      } else {
+        bcrypt.hash(req.body.password, 10, function(err, hash) {
+          if (err) {
+            return res.status(500).send({
+              error: true,
+              message: "Error while generating hash",
+              data: err
+            });
           } else {
-            firstName = name.charAt(0).toUpperCase() + name.slice(1);
-          }
+            let name = req.body.email.split("@")[0];
+            let firstName = "";
+            let lastName = "";
 
-          const user = new userModel({
-            firstName: firstName,
-            lastName: lastName,
-            email: req.body.email,
-            password: hash
-          });
-
-          user.save((err, saved) => {
-            if (err) {
-              return res.status(500).send({
-                error: true,
-                message: "Error while saving user",
-                data: err
-              });
+            if (name.includes(".")) {
+              firstName =
+                name
+                  .split(".")[0]
+                  .charAt(0)
+                  .toUpperCase() + name.split(".")[0].slice(1);
+              lastName =
+                name
+                  .split(".")[1]
+                  .charAt(0)
+                  .toUpperCase() + name.split(".")[1].slice(1);
             } else {
-              return res.status(201).send({
-                error: false,
-                message: "User created successfully"
-              });
+              firstName = name.charAt(0).toUpperCase() + name.slice(1);
             }
-          });
-        }
-      });
+
+            const user = new userModel({
+              firstName: firstName,
+              lastName: lastName,
+              email: req.body.email,
+              password: hash
+            });
+
+            user.save((err, saved) => {
+              if (err) {
+                return res.status(500).send({
+                  error: true,
+                  message: "Error while saving user",
+                  data: err
+                });
+              } else {
+                return res.status(201).send({
+                  error: false,
+                  message: "User created successfully"
+                });
+              }
+            });
+          }
+        });
+      }
     }
-  });
+  );
 };
 
 /**
@@ -152,45 +157,48 @@ module.exports.login = (req, res) => {
     });
   }
 
-  userModel.findOne({ email: req.body.email }, (err, userResult) => {
-    if (err) {
-      return res.status(500).send({
-        error: true,
-        message: "Error while finding user",
-        data: err
-      });
-    } else if (!userResult) {
-      return res.status(401).send({
-        error: true,
-        message: "Invalid username or password"
-      });
-    } else {
-      bcrypt.compare(req.body.password, userResult.password, function(
-        err,
-        result
-      ) {
-        if (result) {
-          var token = jwt.sign({ userId: userResult._id }, "nagarroSecret");
+  userModel.findOne(
+    { email: req.body.email.toLowerCase() },
+    (err, userResult) => {
+      if (err) {
+        return res.status(500).send({
+          error: true,
+          message: "Error while finding user",
+          data: err
+        });
+      } else if (!userResult) {
+        return res.status(401).send({
+          error: true,
+          message: "Invalid username or password"
+        });
+      } else {
+        bcrypt.compare(req.body.password, userResult.password, function(
+          err,
+          result
+        ) {
+          if (result) {
+            var token = jwt.sign({ userId: userResult._id }, "nagarroSecret");
 
-          return res.status(200).send({
-            error: false,
-            message: "Logged in successfully",
-            data: {
-              token: token,
-              firstName: userResult.firstName,
-              lastName: userResult.lastName,
-              role: userResult.role
-            }
-          });
-        } else {
-          return res.status(401).send({
-            error: true,
-            message: "Email Id or password is incorrect"
-          });
-        }
-      });
+            return res.status(200).send({
+              error: false,
+              message: "Logged in successfully",
+              data: {
+                token: token,
+                firstName: userResult.firstName,
+                lastName: userResult.lastName,
+                role: userResult.role
+              }
+            });
+          } else {
+            return res.status(401).send({
+              error: true,
+              message: "Email Id or password is incorrect"
+            });
+          }
+        });
+      }
     }
-  });
+  );
 };
 
 /**

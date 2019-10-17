@@ -4,7 +4,7 @@ const userModel = mongoose.Schema(
   {
     firstName: String,
     lastName: String,
-    email: String,
+    email: { type: String, lowercase: true },
     password: String,
     role: { type: String, default: "user" }
   },
