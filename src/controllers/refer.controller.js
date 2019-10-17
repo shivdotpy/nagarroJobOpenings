@@ -1,10 +1,11 @@
 const referModel = require("../models/refer.model");
 const mailer = require("../mailer/mailer");
 const userModel = require("../models/user.model");
+const jobModel = require("../models/job.model");
 const fs = require("fs");
 const path = require("path");
 
-module.exports.addRefer = (req, res) => {
+module.exports.addRefer = async (req, res) => {
   if (!req.body.name) {
     return res.status(400).send({
       error: true,
@@ -40,9 +41,12 @@ module.exports.addRefer = (req, res) => {
     });
   }
 
+  const jobAssociated = await jobModel.findById(req.body.jobId);
+
   const refer = new referModel({
     jobId: req.body.jobId,
     referBy: req.userId,
+    assignedTo: jobAssociated.postBy,
     name: req.body.name,
     email: req.body.email,
     mobile: req.body.mobile,
@@ -92,9 +96,12 @@ module.exports.updateReferalStatus = (req, res) => {
         referFound.status = req.body.status;
       }
 
-      console.log(req.body.priority);
       if (req.body.priority) {
         referFound.priority = req.body.priority;
+      }
+
+      if (req.body.assignedTo) {
+        referFound.assignedTo = req.body.assignedTo;
       }
 
       referFound.save((err, referalSaved) => {
@@ -157,7 +164,8 @@ module.exports.getReferalsByJobId = (req, res) => {
         });
       }
     })
-    .populate("referBy", "email");
+    .populate("referBy", "email")
+    .populate("assignedTo", "email");
 };
 
 module.exports.getReferalsByUserId = (req, res) => {

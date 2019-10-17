@@ -8,6 +8,7 @@ const referModel = mongoose.Schema({
   resume: String,
   status: { type: String, default: "Open" },
   referBy: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+  assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
   priority: { type: String, default: "medium" }
 });
 

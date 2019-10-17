@@ -236,7 +236,7 @@ module.exports.getUserInfoByToken = (req, res) => {
  *         description: User Info
  */
 module.exports.getHrNames = (req, res) => {
-  userModel.find({ role: "admin" }, (err, allHr) => {
+  userModel.find({ role: "admin" }, { email: 1 }, (err, allHr) => {
     if (err) {
       return res.status(500).send({
         error: true,
