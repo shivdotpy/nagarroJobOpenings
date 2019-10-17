@@ -61,7 +61,8 @@ module.exports.add = (req, res) => {
     goodToHaveSkills: req.body.goodToHaveSkills,
     noOfPositions: req.body.noOfPositions,
     experience: req.body.experience,
-    postBy: req.userId
+    postBy: req.userId,
+    assignedTo: req.userId
   });
 
   Job.save((err, savedJob) => {
@@ -194,7 +195,6 @@ module.exports.getLatestJobs = (req, res) => {
             message: results.length ? "Jobs found" : "No jobs available"
           });
         } else {
-          console.log("yo");
           jobModel.find(
             {},
             {},

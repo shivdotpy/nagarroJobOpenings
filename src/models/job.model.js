@@ -12,7 +12,9 @@ const jobModel = mongoose.Schema(
     description: String,
     noOfPositions: Number,
     experience: String,
-    postBy: String
+    postBy: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+    assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+    priority: { type: String, default: "medium" }
   },
   {
     timestamps: true,

@@ -22,7 +22,7 @@ app.use(cors());
 
 // DB connection
 // mongodb://shiv:shiv1234567890@ds163745.mlab.com:63745/nagarro
-// mongodb://shiv:shiv123456789@ds235328.mlab.com:35328/nagarrotest
+// mongodb://shiv:shiv1234567890@ds117070.mlab.com:17070/nagarrotest
 mongoose.connect(
   "mongodb://shiv:shiv1234567890@ds163745.mlab.com:63745/nagarro",
   { useNewUrlParser: true, useUnifiedTopology: true }
