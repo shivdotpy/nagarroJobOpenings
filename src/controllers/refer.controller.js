@@ -152,7 +152,8 @@ module.exports.getReferalsByJobId = (req, res) => {
       if (err) {
         return res.status(500).send({
           error: true,
-          message: "Error while finding referrals"
+          message: "Error while finding referrals",
+          data: err
         });
       } else {
         return res.status(200).send({
@@ -165,7 +166,7 @@ module.exports.getReferalsByJobId = (req, res) => {
       }
     })
     .populate("referBy", "email")
-    .populate("assignedTo", "email", "name");
+    .populate("assignedTo", "email");
 };
 
 module.exports.getReferalsByUserId = (req, res) => {
