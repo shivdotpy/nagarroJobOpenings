@@ -281,17 +281,25 @@ module.exports.getAllReferal = (req, res) => {
                 message: "Error while finding referals"
               });
             } else {
+              let referalsCopy = [...referals];
+              console.log(referalsCopy);
+
+              referalsCopy.forEach(referal => {
+                referal.assignedTo = referal.assignedTo.name;
+              });
+
               return res.status(200).send({
                 error: false,
                 message: referals.length
                   ? "Referals found"
                   : "No referals available",
-                data: referals
+                data: referalsCopy
               });
             }
           })
           .populate("referBy", "name")
-          .populate("assignedTo", "name");
+          .populate("assignedTo", "name")
+          .lean();
       }
     }
   });
