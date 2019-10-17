@@ -7,7 +7,7 @@ const referModel = mongoose.Schema({
   email: String,
   resume: String,
   status: { type: String, default: "Open" },
-  referBy: String,
+  referBy: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
   priority: { type: String, default: "medium" }
 });
 

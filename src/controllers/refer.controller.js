@@ -107,27 +107,27 @@ module.exports.updateReferalStatus = (req, res) => {
         } else {
           // Mail to referal person
 
-          // userModel.findById(referFound.referBy, (err, user) => {
-          //   fs.readFile(
-          //     path.join(
-          //       __dirname,
-          //       "..",
-          //       "mailer",
-          //       "samples",
-          //       "referalStatus.html"
-          //     ),
-          //     (err, referralHTML) => {
-          //       mailer.mail(
-          //         user.email,
-          //         referralHTML
-          //           .toString()
-          //           .replace("#REFERBYNAME", user.email.split(".")[0])
-          //           .replace("#REFERRALNAME", referFound.name)
-          //           .replace("#REFERRALSTATUS", req.body.status)
-          //       );
-          //     }
-          //   );
-          // });
+          userModel.findById(referFound.referBy, (err, user) => {
+            fs.readFile(
+              path.join(
+                __dirname,
+                "..",
+                "mailer",
+                "samples",
+                "referalStatus.html"
+              ),
+              (err, referralHTML) => {
+                mailer.mail(
+                  user.email,
+                  referralHTML
+                    .toString()
+                    .replace("#REFERBYNAME", user.email.split(".")[0])
+                    .replace("#REFERRALNAME", referFound.name)
+                    .replace("#REFERRALSTATUS", req.body.status)
+                );
+              }
+            );
+          });
 
           return res.status(200).send({
             error: false,
@@ -140,10 +140,8 @@ module.exports.updateReferalStatus = (req, res) => {
 };
 
 module.exports.getReferalsByJobId = (req, res) => {
-  referModel.find(
-    { jobId: req.params.jobId },
-    { resume: 0 },
-    (err, referalsResult) => {
+  referModel
+    .find({ jobId: req.params.jobId }, { resume: 0 }, (err, referalsResult) => {
       if (err) {
         return res.status(500).send({
           error: true,
@@ -158,8 +156,8 @@ module.exports.getReferalsByJobId = (req, res) => {
           data: referalsResult
         });
       }
-    }
-  );
+    })
+    .populate("referBy", "email");
 };
 
 module.exports.getReferalsByUserId = (req, res) => {
