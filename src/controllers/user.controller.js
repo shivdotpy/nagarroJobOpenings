@@ -240,7 +240,7 @@ module.exports.getUserInfoByToken = (req, res) => {
  *         description: User Info
  */
 module.exports.getHrNames = (req, res) => {
-  userModel.find({ role: "admin" }, { email: 1 }, (err, allHr) => {
+  userModel.find({ role: "admin" }, { email: 1, name: 1 }, (err, allHr) => {
     if (err) {
       return res.status(500).send({
         error: true,
@@ -248,20 +248,10 @@ module.exports.getHrNames = (req, res) => {
         data: err
       });
     } else {
-      let allHrCopy = [...allHr];
-      allHrCopy.forEach(hr => {
-        hr.name =
-          hr.email.split("@")[0].split(".")[0] +
-          " " +
-          hr.email.split("@")[0].split(".")[1];
-      });
-
-      console.log(allHrCopy);
-
       return res.status(200).send({
         error: false,
         message: allHr.length ? "Hr found" : "No Hr found",
-        data: allHrCopy
+        data: allHr
       });
     }
   });

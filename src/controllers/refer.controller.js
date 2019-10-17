@@ -165,7 +165,7 @@ module.exports.getReferalsByJobId = (req, res) => {
       }
     })
     .populate("referBy", "email")
-    .populate("assignedTo", "email");
+    .populate("assignedTo", "email", "name");
 };
 
 module.exports.getReferalsByUserId = (req, res) => {
