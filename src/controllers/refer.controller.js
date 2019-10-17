@@ -68,12 +68,12 @@ module.exports.addRefer = (req, res) => {
 module.exports.updateReferalStatus = (req, res) => {
   const referId = req.params.referId;
 
-  if (!req.body.status) {
-    return res.status(400).send({
-      error: true,
-      message: "Status required"
-    });
-  }
+  // if (!req.body.status) {
+  //   return res.status(400).send({
+  //     error: true,
+  //     message: "Status required"
+  //   });
+  // }
 
   referModel.findById(referId, (err, referFound) => {
     if (err) {
@@ -88,7 +88,15 @@ module.exports.updateReferalStatus = (req, res) => {
         message: "No referal found with this ID"
       });
     } else {
-      referFound.status = req.body.status;
+      if (req.body.status) {
+        referFound.status = req.body.status;
+      }
+
+      console.log(req.body.priority);
+      if (req.body.priority) {
+        referFound.priority = req.body.priority;
+      }
+
       referFound.save((err, referalSaved) => {
         if (err) {
           return res.status(500).send({
@@ -99,27 +107,27 @@ module.exports.updateReferalStatus = (req, res) => {
         } else {
           // Mail to referal person
 
-          userModel.findById(referFound.referBy, (err, user) => {
-            fs.readFile(
-              path.join(
-                __dirname,
-                "..",
-                "mailer",
-                "samples",
-                "referalStatus.html"
-              ),
-              (err, referralHTML) => {
-                mailer.mail(
-                  user.email,
-                  referralHTML
-                    .toString()
-                    .replace("#REFERBYNAME", user.email.split(".")[0])
-                    .replace("#REFERRALNAME", referFound.name)
-                    .replace("#REFERRALSTATUS", req.body.status)
-                );
-              }
-            );
-          });
+          // userModel.findById(referFound.referBy, (err, user) => {
+          //   fs.readFile(
+          //     path.join(
+          //       __dirname,
+          //       "..",
+          //       "mailer",
+          //       "samples",
+          //       "referalStatus.html"
+          //     ),
+          //     (err, referralHTML) => {
+          //       mailer.mail(
+          //         user.email,
+          //         referralHTML
+          //           .toString()
+          //           .replace("#REFERBYNAME", user.email.split(".")[0])
+          //           .replace("#REFERRALNAME", referFound.name)
+          //           .replace("#REFERRALSTATUS", req.body.status)
+          //       );
+          //     }
+          //   );
+          // });
 
           return res.status(200).send({
             error: false,

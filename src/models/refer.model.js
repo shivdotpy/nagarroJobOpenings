@@ -7,7 +7,8 @@ const referModel = mongoose.Schema({
   email: String,
   resume: String,
   status: { type: String, default: "Open" },
-  referBy: String
+  referBy: String,
+  priority: { type: String, default: "medium" }
 });
 
 module.exports = mongoose.model("refer", referModel);
