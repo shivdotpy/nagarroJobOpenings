@@ -72,6 +72,10 @@ module.exports.signup = (req, res) => {
           });
         } else {
           const user = new userModel({
+            name:
+              req.body.email.split("@")[0].split(".")[0] +
+              " " +
+              req.body.email.split("@")[0].split(".")[1],
             email: req.body.email,
             password: hash
           });
@@ -244,10 +248,20 @@ module.exports.getHrNames = (req, res) => {
         data: err
       });
     } else {
+      let allHrCopy = [...allHr];
+      allHrCopy.forEach(hr => {
+        hr.name =
+          hr.email.split("@")[0].split(".")[0] +
+          " " +
+          hr.email.split("@")[0].split(".")[1];
+      });
+
+      console.log(allHrCopy);
+
       return res.status(200).send({
         error: false,
         message: allHr.length ? "Hr found" : "No Hr found",
-        data: allHr
+        data: allHrCopy
       });
     }
   });
