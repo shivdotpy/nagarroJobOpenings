@@ -224,3 +224,31 @@ module.exports.getUserInfoByToken = (req, res) => {
     }
   });
 };
+
+/**
+ * @swagger
+ * /user/allHr:
+ *   get:
+ *     tags:
+ *       - User
+ *     responses:
+ *       200:
+ *         description: User Info
+ */
+module.exports.getHrNames = (req, res) => {
+  userModel.find({ role: "admin" }, (err, allHr) => {
+    if (err) {
+      return res.status(500).send({
+        error: true,
+        message: "Error while finding all hr",
+        data: err
+      });
+    } else {
+      return res.status(200).send({
+        error: false,
+        message: allHr.length ? "Hr found" : "No Hr found",
+        data: allHr
+      });
+    }
+  });
+};
