@@ -71,14 +71,32 @@ module.exports.signup = (req, res) => {
             data: err
           });
         } else {
+          let name = req.body.email.split("@")[0];
+          let firstName = "";
+          let lastName = "";
+
+          if (name.includes(".")) {
+            firstName =
+              name
+                .split(".")[0]
+                .charAt(0)
+                .toUpperCase() + name.split(".")[0].slice(1);
+            lastName =
+              name
+                .split(".")[1]
+                .charAt(0)
+                .toUpperCase() + name.split(".")[1].slice(1);
+          } else {
+            firstName = name.charAt(0).toUpperCase() + name.slice(1);
+          }
+
           const user = new userModel({
-            name:
-              req.body.email.split("@")[0].split(".")[0] +
-              " " +
-              req.body.email.split("@")[0].split(".")[1],
+            firstName: firstName,
+            lastName: lastName,
             email: req.body.email,
             password: hash
           });
+
           user.save((err, saved) => {
             if (err) {
               return res.status(500).send({
@@ -154,26 +172,13 @@ module.exports.login = (req, res) => {
         if (result) {
           var token = jwt.sign({ userId: userResult._id }, "nagarroSecret");
 
-          // User Name
-          const user = req.body.email.split("@")[0];
-          let firstName = "";
-          let lastName = "";
-          if (user.includes(".")) {
-            firstName = user.split(".")[0];
-            lastName = user.split(".")[1];
-          } else {
-            firstName = user;
-          }
-
           return res.status(200).send({
             error: false,
             message: "Logged in successfully",
             data: {
               token: token,
-              firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
-              lastName: lastName
-                ? lastName.charAt(0).toUpperCase() + lastName.slice(1)
-                : null,
+              firstName: userResult.firstName,
+              lastName: userResult.lastName,
               role: userResult.role
             }
           });
@@ -199,34 +204,34 @@ module.exports.login = (req, res) => {
  *         description: User Info
  */
 module.exports.getUserInfoByToken = (req, res) => {
-  userModel.findById(req.userId, { role: 1, email: 1 }, (err, userFound) => {
-    if (err) {
-      return res.status(500).send({
-        error: true,
-        message: "Error while getting user by Token"
-      });
-    } else if (!userFound) {
-      return res.status(400).send({
-        error: true,
-        message: "No User found"
-      });
-    } else {
-      let firstName = userFound.email.split("@")[0].split(".")[0];
-      let lastName = userFound.email.split("@")[0].split(".")[1];
-      let data = {};
-      data.firstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
-      data.lastName = lastName
-        ? lastName.charAt(0).toUpperCase() + lastName.slice(1)
-        : null;
-      data.role = userFound.role;
-      data.email = userFound.email;
-      return res.status(200).send({
-        error: false,
-        message: "User found",
-        data: data
-      });
+  userModel.findById(
+    req.userId,
+    { role: 1, email: 1, firstName: 1, lastName: 1 },
+    (err, userFound) => {
+      if (err) {
+        return res.status(500).send({
+          error: true,
+          message: "Error while getting user by Token"
+        });
+      } else if (!userFound) {
+        return res.status(400).send({
+          error: true,
+          message: "No User found"
+        });
+      } else {
+        let data = {};
+        data.firstName = userFound.firstName;
+        data.lastName = userFound.lastName;
+        data.role = userFound.role;
+        data.email = userFound.email;
+        return res.status(200).send({
+          error: false,
+          message: "User found",
+          data: data
+        });
+      }
     }
-  });
+  );
 };
 
 /**
