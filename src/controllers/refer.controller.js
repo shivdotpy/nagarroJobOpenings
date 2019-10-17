@@ -244,8 +244,6 @@ module.exports.getReferalResumeById = (req, res) => {
 };
 
 module.exports.getAllReferal = (req, res) => {
-  console.log(req.userId);
-
   userModel.findById(req.userId, (err, userFound) => {
     if (err) {
       return res.status(500).send({
@@ -255,10 +253,8 @@ module.exports.getAllReferal = (req, res) => {
       });
     } else {
       if (userFound.role === "admin") {
-        referModel.find(
-          { assignedTo: req.userId },
-          { resume: 0 },
-          (err, referals) => {
+        referModel
+          .find({ assignedTo: req.userId }, { resume: 0 }, (err, referals) => {
             if (err) {
               return res.status(500).send({
                 error: true,
@@ -273,8 +269,9 @@ module.exports.getAllReferal = (req, res) => {
                 data: referals
               });
             }
-          }
-        );
+          })
+          .populate("referBy", "name")
+          .populate("assignedTo", "name");
       } else {
         referModel.find({}, { resume: 0 }, (err, referals) => {
           if (err) {

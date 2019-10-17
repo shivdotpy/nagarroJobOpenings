@@ -54,7 +54,6 @@ module.exports.addSkill = (req, res) => {
           data: err
         });
       } else if (skillFound) {
-        console.log(skillFound);
         return res.status(400).send({
           error: true,
           message: "Skill already available with this name"
