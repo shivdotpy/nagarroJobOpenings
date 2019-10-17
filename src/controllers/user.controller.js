@@ -248,10 +248,15 @@ module.exports.getHrNames = (req, res) => {
         data: err
       });
     } else {
+      let result = {};
+      allHr.forEach(hr => {
+        result[hr._id] = hr.name;
+      });
+
       return res.status(200).send({
         error: false,
         message: allHr.length ? "Hr found" : "No Hr found",
-        data: allHr
+        data: result
       });
     }
   });

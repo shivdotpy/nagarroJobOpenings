@@ -9,7 +9,7 @@ const referModel = mongoose.Schema({
   status: { type: String, default: "Open" },
   referBy: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
   assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-  priority: { type: String, default: "medium" }
+  priority: { type: String, default: "Medium" }
 });
 
 module.exports = mongoose.model("refer", referModel);
