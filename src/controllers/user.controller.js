@@ -253,24 +253,29 @@ module.exports.getUserInfoByToken = (req, res) => {
  *         description: User Info
  */
 module.exports.getHrNames = (req, res) => {
-  userModel.find({ role: "admin" }, { email: 1, name: 1 }, (err, allHr) => {
-    if (err) {
-      return res.status(500).send({
-        error: true,
-        message: "Error while finding all hr",
-        data: err
-      });
-    } else {
-      let result = {};
-      allHr.forEach(hr => {
-        result[hr._id] = hr.name;
-      });
+  userModel.find(
+    { role: "admin" },
+    { email: 1, firstName: 1, lastName: 1 },
+    (err, allHr) => {
+      if (err) {
+        return res.status(500).send({
+          error: true,
+          message: "Error while finding all hr",
+          data: err
+        });
+      } else {
+        console.log(allHr);
+        let result = {};
+        allHr.forEach(hr => {
+          result[hr._id] = hr.firstName + " " + hr.lastName;
+        });
 
-      return res.status(200).send({
-        error: false,
-        message: allHr.length ? "Hr found" : "No Hr found",
-        data: result
-      });
+        return res.status(200).send({
+          error: false,
+          message: allHr.length ? "Hr found" : "No Hr found",
+          data: result
+        });
+      }
     }
-  });
+  );
 };

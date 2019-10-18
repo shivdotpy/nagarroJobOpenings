@@ -35,7 +35,7 @@ const jobModel = require("../models/job.model");
  *           $ref: '#/definitions/Skill'
  */
 module.exports.addSkill = (req, res) => {
-  if (!req.body.name) {
+  if (!req.body.name.trim()) {
     return res.status(400).send({
       error: true,
       message: "Skill name required"
@@ -44,7 +44,7 @@ module.exports.addSkill = (req, res) => {
 
   skillModel.findOne(
     {
-      name: req.body.name.toLowerCase()
+      name: req.body.name.trim().toLowerCase()
     },
     (err, skillFound) => {
       if (err) {
@@ -61,7 +61,7 @@ module.exports.addSkill = (req, res) => {
       } else {
         const skill = new skillModel({
           _id: Math.floor(100000 + Math.random() * 900000),
-          name: req.body.name
+          name: req.body.name.trim()
         });
 
         skill.save((err, skillSaved) => {
