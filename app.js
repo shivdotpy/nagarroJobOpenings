@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const morgan = require("morgan");
 
 // Swagger
 const swagger = require("./src/swagger/swagger");
@@ -19,6 +20,7 @@ const PORT = process.env.PORT || 3000;
 
 // CORS
 app.use(cors());
+app.use(morgan("dev"));
 
 // DB connection
 // mongodb://shiv:shiv1234567890@ds163745.mlab.com:63745/nagarro
@@ -26,14 +28,7 @@ app.use(cors());
 // mongodb+srv://shivdotpy:shiv1234567890@cluster0-6zuqf.mongodb.net/test?retryWrites=true&w=majority
 mongoose.connect(
   "mongodb+srv://shivdotpy:shiv1234567890@cluster0-6zuqf.mongodb.net/test?retryWrites=true&w=majority",
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  err => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("working db");
-    }
-  }
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
 );
 
 app.use(bodyParser.json({ limit: "50mb" }));
