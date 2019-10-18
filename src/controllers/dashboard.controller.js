@@ -40,7 +40,7 @@ module.exports.getOverview = async (req, res) => {
       fullstackCount++;
     } else if (job.type.toLowerCase() === "qa") {
       qaCount++;
-    } else if (job.type.toLowerCase() === "admin") {
+    } else if (job.type.toLowerCase() === "administrative") {
       adminCount++;
     } else {
       otherCount++;
