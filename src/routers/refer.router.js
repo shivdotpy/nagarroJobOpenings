@@ -19,4 +19,6 @@ router.patch("/status/:referId", referController.updateReferalStatus);
 
 router.get("/resume/:referId", referController.getReferalResumeById);
 
+router.delete("/delete/:referId", referController.deleteReferal);
+
 module.exports = router;

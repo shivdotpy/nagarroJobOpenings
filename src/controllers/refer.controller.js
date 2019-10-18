@@ -294,3 +294,30 @@ module.exports.getAllReferal = (req, res) => {
     }
   });
 };
+
+module.exports.deleteReferal = (req, res) => {
+  const referId = req.params.referId;
+
+  userModel.findById(req.userId, (err, userFound) => {
+    if (userFound.role !== "superadmin") {
+      return res.status(403).send({
+        error: true,
+        message: "Permission denied"
+      });
+    } else {
+      referModel.findByIdAndRemove(referId, (err, deleted) => {
+        if (err) {
+          return res.status(500).send({
+            error: true,
+            message: "Error while deleting the referal"
+          });
+        } else {
+          return res.status(200).send({
+            error: false,
+            message: "Referal deleted successfully"
+          });
+        }
+      });
+    }
+  });
+};
