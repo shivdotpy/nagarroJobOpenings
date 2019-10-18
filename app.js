@@ -23,9 +23,17 @@ app.use(cors());
 // DB connection
 // mongodb://shiv:shiv1234567890@ds163745.mlab.com:63745/nagarro
 // mongodb://shiv:shiv1234567890@ds117070.mlab.com:17070/nagarrotest
+// mongodb+srv://shivdotpy:shiv1234567890@cluster0-6zuqf.mongodb.net/test?retryWrites=true&w=majority
 mongoose.connect(
-  "mongodb://shiv:shiv1234567890@ds163745.mlab.com:63745/nagarro",
-  { useNewUrlParser: true, useUnifiedTopology: true }
+  "mongodb+srv://shivdotpy:shiv1234567890@cluster0-6zuqf.mongodb.net/test?retryWrites=true&w=majority",
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  err => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("working db");
+    }
+  }
 );
 
 app.use(bodyParser.json({ limit: "50mb" }));
