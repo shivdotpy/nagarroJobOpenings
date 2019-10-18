@@ -270,8 +270,7 @@ module.exports.getAllReferal = (req, res) => {
               });
             }
           })
-          .populate("referBy", "name")
-          .populate("assignedTo", "name");
+          .populate("referBy", "firstName");
       } else {
         referModel
           .find({}, { resume: 0 }, (err, referals) => {
@@ -290,7 +289,7 @@ module.exports.getAllReferal = (req, res) => {
               });
             }
           })
-          .populate("referBy", "name");
+          .populate("referBy", "firstName");
       }
     }
   });
