@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const locationModel = mongoose.Schema(
   {
     _id: Number,
-    name: { type: String, lowercase: true }
+    name: { type: String }
   },
   {
     timestamps: true,

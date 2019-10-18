@@ -4,7 +4,7 @@ const locationModel = require("../models/location.model");
 const jobModel = require("../models/job.model");
 
 module.exports.addLocation = (req, res) => {
-  if (!req.body.name) {
+  if (!req.body.name.trim()) {
     return res.status(400).send({
       error: true,
       message: "Location name required"
@@ -12,7 +12,7 @@ module.exports.addLocation = (req, res) => {
   }
 
   locationModel.findOne(
-    { name: req.body.name.toLowerCase() },
+    { name: req.body.name.trim().toLowerCase() },
     (err, locationFound) => {
       if (err) {
         return res.status(500).send({
@@ -28,7 +28,7 @@ module.exports.addLocation = (req, res) => {
       } else {
         const location = new locationModel({
           _id: Math.floor(100000 + Math.random() * 900000),
-          name: req.body.name
+          name: req.body.name.trim()
         });
 
         location.save((err, locationSaved) => {
