@@ -94,6 +94,7 @@ module.exports.updateReferalStatus = (req, res) => {
     } else {
       if (req.body.status) {
         referFound.status = req.body.status;
+        referFound.isUpdated = true;
       }
 
       if (req.body.priority) {
