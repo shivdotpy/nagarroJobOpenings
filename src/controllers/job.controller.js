@@ -155,7 +155,8 @@ module.exports.bulkUpload = (req, res) => {
           goodToHaveSkills: sheet.goodToHaveSkills.split(","),
           noOfPositions: sheet.noOfPositions,
           experience: sheet.experience,
-          postBy: req.userId
+          postBy: req.userId,
+          assignedTo: req.userId
         });
 
         Job.save(err => {
