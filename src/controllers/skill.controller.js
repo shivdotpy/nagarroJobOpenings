@@ -146,20 +146,37 @@ module.exports.addBulkSkills = (req, res) => {
         workbook.Sheets[workbook.SheetNames[0]]
       );
 
-      sheetData.forEach(sheet => {
-        const Skill = new skillModel({
-          _id: Math.floor(100000 + Math.random() * 900000),
-          name: sheet.name
-        });
+      sheetData.forEach((sheet, index) => {
+        if (sheet.Name) {
+          skillModel.find(
+            {
+              $or: [{ name: sheet.name }, { name: sheet.Name }]
+            },
+            (err, skillsFound) => {
+              if (err) {
+                console.log("error on finding skill on bulk", err);
+              } else if (!skillsFound.length) {
+                const Skill = new skillModel({
+                  _id: Math.floor(100000 + Math.random() * 900000),
+                  name: sheet.name ? sheet.name : sheet.Name
+                });
 
-        Skill.save(err => {
-          console.log("saved");
-        });
-      });
+                Skill.save(err => {
+                  console.log("saved");
+                });
+              }
+            }
+          );
+        }
 
-      res.send({
-        error: false,
-        message: "Skills saved successfully"
+        if (index === sheetData.length - 1) {
+          setTimeout(() => {
+            res.send({
+              error: false,
+              message: "Skills saved successfully"
+            });
+          }, 1000);
+        }
       });
     }
   });
