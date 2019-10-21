@@ -1,4 +1,5 @@
 const jobModel = require("../models/job.model");
+const skillModel = require("../models/skills.model");
 const fs = require("fs");
 const xlsx = require("xlsx");
 
@@ -63,6 +64,27 @@ module.exports.add = (req, res) => {
     experience: req.body.experience,
     postBy: req.userId,
     assignedTo: req.userId
+  });
+
+  let allSkills = [...req.body.mandatorySkills, ...req.body.goodToHaveSkills];
+
+  // Save skills which is not available in skill DB
+  allSkills.forEach(skill => {
+    skillModel.findOne(
+      { name: { $regex: new RegExp(skill, "i") } },
+      (err, skillFound) => {
+        if (err) {
+          console.log("Error while finding skill on job save", err);
+        } else if (!skillFound) {
+          const Skill = new skillModel({
+            _id: Math.floor(100000 + Math.random() * 900000),
+            name: skill
+          });
+
+          Skill.save();
+        }
+      }
+    );
   });
 
   Job.save((err, savedJob) => {
