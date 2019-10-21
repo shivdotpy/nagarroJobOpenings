@@ -82,20 +82,37 @@ module.exports.addBulkLocation = (req, res) => {
         workbook.Sheets[workbook.SheetNames[0]]
       );
 
-      sheetData.forEach(sheet => {
-        const Location = new locationModel({
-          _id: Math.floor(100000 + Math.random() * 900000),
-          name: sheet.name
-        });
+      sheetData.forEach((sheet, index) => {
+        if (sheet.Name) {
+          locationModel.find(
+            {
+              $or: [{ name: sheet.name }, { name: sheet.Name }]
+            },
+            (err, locationsFound) => {
+              if (err) {
+                console.log("Error while finding location", err);
+              } else if (!locationsFound.length) {
+                const Location = new locationModel({
+                  _id: Math.floor(100000 + Math.random() * 900000),
+                  name: sheet.name ? sheet.name : sheet.Name
+                });
 
-        Location.save(err => {
-          console.log("saved");
-        });
-      });
+                Location.save(err => {
+                  console.log("saved");
+                });
+              }
+            }
+          );
+        }
 
-      res.send({
-        error: false,
-        message: "Locations saved successfully"
+        if (index === sheetData.length - 1) {
+          setTimeout(() => {
+            res.send({
+              error: false,
+              message: "Locations saved successfully"
+            });
+          }, 1000);
+        }
       });
     }
   });
