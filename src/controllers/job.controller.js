@@ -178,7 +178,7 @@ module.exports.getLatestJobs = (req, res) => {
   let skip = (parseInt(req.query.page) - 1) * parseInt(req.query.count);
 
   jobModel.find(
-    { type: req.query.type },
+    { type: { $regex: new RegExp(req.query.type, "i") } },
     {},
     { sort: { createdAt: -1 }, limit, skip: skip ? skip : 0 },
     (err, results) => {
