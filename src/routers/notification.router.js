@@ -6,4 +6,9 @@ router.use(authMiddleware);
 
 router.get("/myNotifications", notificationController.getMyNotifications);
 
+router.delete(
+  "/deleteMyNotification",
+  notificationController.readMyNotifications
+);
+
 module.exports = router;
