@@ -2,6 +2,7 @@ const referModel = require("../models/refer.model");
 const mailer = require("../mailer/mailer");
 const userModel = require("../models/user.model");
 const jobModel = require("../models/job.model");
+const notificationModel = require("../models/notification.model");
 const fs = require("fs");
 const path = require("path");
 
