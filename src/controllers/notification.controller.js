@@ -9,6 +9,16 @@ module.exports.getMyNotifications = (req, res) => {
         data: err
       });
     } else {
+      // remove the docs
+      notificationModel.deleteMany(
+        { userId: req.userId },
+        (err, notificationDeleted) => {
+          if (err) {
+            console.log("Error on deleting notifications", err);
+          }
+        }
+      );
+
       return res.status(200).send({
         error: false,
         message: notifications.length
