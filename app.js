@@ -4,6 +4,8 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const http = require("http").createServer(app);
+var io = require("socket.io")(http);
 
 // Swagger
 const swagger = require("./src/swagger/swagger");
@@ -46,6 +48,15 @@ app.use("/location", locationRoute);
 app.use("/swagger", swagger.router);
 app.use("/api", dashboardRoute);
 
-app.listen(PORT);
+http.listen(PORT);
+
+io.on("connection", client => {
+  client.on("why", () => {
+    console.log("why");
+    client.emit("timer", new Date());
+  });
+});
+
+// app.listen(PORT);
 
 module.exports = app;
