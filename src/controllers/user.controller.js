@@ -167,7 +167,7 @@ module.exports.login = (req, res) => {
           data: err
         });
       } else if (!userResult) {
-        return res.status(400).send({
+        return res.status(401).send({
           error: true,
           message: "Email Id or password is incorrect"
         });
