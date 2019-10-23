@@ -169,7 +169,7 @@ module.exports.login = (req, res) => {
       } else if (!userResult) {
         return res.status(401).send({
           error: true,
-          message: "Invalid username or password"
+          message: "Email Id or password is incorrect"
         });
       } else {
         bcrypt.compare(req.body.password, userResult.password, function(
@@ -254,7 +254,7 @@ module.exports.getUserInfoByToken = (req, res) => {
  */
 module.exports.getHrNames = (req, res) => {
   userModel.find(
-    { role: "admin" },
+    { $or: [{ role: "admin" }, { role: "superadmin" }] },
     { email: 1, firstName: 1, lastName: 1 },
     (err, allHr) => {
       if (err) {

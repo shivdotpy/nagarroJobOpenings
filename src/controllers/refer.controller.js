@@ -2,6 +2,7 @@ const referModel = require("../models/refer.model");
 const mailer = require("../mailer/mailer");
 const userModel = require("../models/user.model");
 const jobModel = require("../models/job.model");
+const notificationModel = require("../models/notification.model");
 const fs = require("fs");
 const path = require("path");
 
@@ -151,6 +152,19 @@ module.exports.updateReferalStatus = (req, res) => {
 
       if (req.body.assignedTo) {
         referFound.assignedTo = req.body.assignedTo;
+
+        jobModel.findById(referFound.jobId, (err, jobFound) => {
+          if (err) {
+            console.log("error on finding job");
+          } else {
+            const Notification = new notificationModel({
+              userId: req.body.assignedTo,
+              message: `${referFound.name} assigned to you for the position of ${jobFound.title} !`
+            });
+
+            Notification.save();
+          }
+        });
       }
 
       referFound.save((err, referalSaved) => {

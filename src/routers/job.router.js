@@ -15,4 +15,6 @@ router.delete("/delete/:id", jobController.deleteJob);
 
 router.put("/edit/:id", jobController.editJobs);
 
+router.patch("/updateStatus/:id", jobController.updateJobStatus);
+
 module.exports = router;

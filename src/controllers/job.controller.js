@@ -57,6 +57,7 @@ module.exports.add = (req, res) => {
     description: req.body.description,
     jobType: req.body.jobType,
     type: req.body.type,
+    status: req.body.status,
     location: req.body.location,
     mandatorySkills: req.body.mandatorySkills,
     goodToHaveSkills: req.body.goodToHaveSkills,
@@ -289,6 +290,8 @@ module.exports.editJobs = (req, res) => {
       title: req.body.title,
       description: req.body.description,
       jobType: req.body.jobType,
+      type: req.body.type,
+      status: req.body.status,
       location: req.body.location,
       mandatorySkills: req.body.mandatorySkills,
       goodToHaveSkills: req.body.goodToHaveSkills,
@@ -310,4 +313,44 @@ module.exports.editJobs = (req, res) => {
       }
     }
   );
+};
+
+module.exports.updateJobStatus = (req, res) => {
+  if (!req.body.status) {
+    return res.status(400).send({
+      error: true,
+      message: "Status required"
+    });
+  }
+
+  jobModel.findById(req.params.id, (err, jobFound) => {
+    if (err) {
+      return res.status(500).send({
+        error: true,
+        message: "Error while finding job with this id",
+        data: err
+      });
+    } else if (!jobModel) {
+      return res.status(400).send({
+        error: true,
+        message: "No job found with this id"
+      });
+    } else {
+      jobFound.status = req.body.status;
+      jobFound.save((err, jobStatusChanged) => {
+        if (err) {
+          return res.status(500).send({
+            error: true,
+            message: "Error while updating status",
+            data: err
+          });
+        } else {
+          return res.status(200).send({
+            error: false,
+            message: "Job status changed successfully"
+          });
+        }
+      });
+    }
+  });
 };
