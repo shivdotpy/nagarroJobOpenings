@@ -167,9 +167,9 @@ module.exports.login = (req, res) => {
           data: err
         });
       } else if (!userResult) {
-        return res.status(401).send({
+        return res.status(400).send({
           error: true,
-          message: "Invalid username or password"
+          message: "Email Id or password is incorrect"
         });
       } else {
         bcrypt.compare(req.body.password, userResult.password, function(
