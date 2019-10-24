@@ -58,8 +58,8 @@ let socketPool = [];
 io.on("connection", socket => {
   console.log("connected", socket.id);
 
-  // EVENTS
-  socket.on("getMyNotifications", token => {
+  // Register user with access token
+  socket.on("register", token => {
     if (token) {
       jwt.verify(token, "nagarroSecret", (err, decoded) => {
         if (decoded) {

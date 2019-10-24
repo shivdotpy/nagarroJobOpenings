@@ -166,13 +166,10 @@ module.exports.updateReferalStatus = (req, res) => {
             Notification.save(async (err, notificationSaved) => {
               // EMIT the notification event
 
-              console.log(Object.keys(global.socketPool));
-
+              // check if the assigned user available or not
               if (
                 Object.keys(global.socketPool).includes(req.body.assignedTo)
               ) {
-                // notificationModel.assignedTo
-
                 const notifications = await notificationModel.find({
                   userId: req.body.assignedTo
                 });
