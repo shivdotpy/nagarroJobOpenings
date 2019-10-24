@@ -5,6 +5,7 @@ const jobModel = require("../models/job.model");
 const notificationModel = require("../models/notification.model");
 const fs = require("fs");
 const path = require("path");
+const jwt = require("jsonwebtoken");
 
 module.exports.addRefer = async (req, res) => {
   if (!req.body.name) {
@@ -162,7 +163,25 @@ module.exports.updateReferalStatus = (req, res) => {
               message: `${referFound.name} assigned to you for the position of ${jobFound.title} !`
             });
 
-            Notification.save();
+            Notification.save(async (err, notificationSaved) => {
+              // EMIT the notification event
+
+              console.log(Object.keys(global.socketPool));
+
+              if (
+                Object.keys(global.socketPool).includes(req.body.assignedTo)
+              ) {
+                // notificationModel.assignedTo
+
+                const notifications = await notificationModel.find({
+                  userId: req.body.assignedTo
+                });
+
+                global.io
+                  .to(global.socketPool[req.body.assignedTo])
+                  .emit("myNotification", notifications);
+              }
+            });
           }
         });
       }

@@ -4,7 +4,6 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha src/**/*.test.js --timeout 10000",
     "start": "node app.js"
   },
   "keywords": [],

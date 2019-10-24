@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const http = require("http").createServer(app);
 var io = require("socket.io")(http);
+const jwt = require("jsonwebtoken");
 
 // Swagger
 const swagger = require("./src/swagger/swagger");
@@ -52,13 +53,22 @@ app.use("/api", dashboardRoute);
 
 http.listen(PORT);
 
-io.on("connection", client => {
-  client.on("why", () => {
-    console.log("why");
-    client.emit("timer", new Date());
+let socketPool = [];
+
+io.on("connection", socket => {
+  console.log("connected", socket.id);
+
+  // EVENTS
+  socket.on("getMyNotifications", token => {
+    if (token) {
+      jwt.verify(token, "nagarroSecret", (err, decoded) => {
+        if (decoded) {
+          socketPool[decoded.userId] = socket.id;
+        }
+      });
+    }
   });
 });
 
-// app.listen(PORT);
-
-module.exports = app;
+global.io = io;
+global.socketPool = socketPool;
