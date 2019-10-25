@@ -31,7 +31,7 @@ app.use(morgan("dev"));
 // mongodb://shiv:shiv1234567890@ds117070.mlab.com:17070/nagarrotest
 // mongodb+srv://shivdotpy:shiv1234567890@cluster0-6zuqf.mongodb.net/test?retryWrites=true&w=majority
 mongoose.connect(
-  "mongodb+srv://shivdotpy:shiv1234567890@cluster0-6zuqf.mongodb.net/test?retryWrites=true&w=majority",
+  "mongodb+srv://shivdotpy:shiv1234567890@cluster0-6zuqf.mongodb.net/nagarro?retryWrites=true&w=majority",
   { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
 );
 
