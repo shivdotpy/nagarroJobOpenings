@@ -4,6 +4,9 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const http = require("http").createServer(app);
+var io = require("socket.io")(http);
+const jwt = require("jsonwebtoken");
 
 // Swagger
 const swagger = require("./src/swagger/swagger");
@@ -48,6 +51,24 @@ app.use("/notification", notificationRoute);
 app.use("/swagger", swagger.router);
 app.use("/api", dashboardRoute);
 
-app.listen(PORT);
+http.listen(PORT);
 
-module.exports = app;
+let socketPool = [];
+
+io.on("connection", socket => {
+  console.log("connected", socket.id);
+
+  // Register user with access token
+  socket.on("register", token => {
+    if (token) {
+      jwt.verify(token, "nagarroSecret", (err, decoded) => {
+        if (decoded) {
+          socketPool[decoded.userId] = socket.id;
+        }
+      });
+    }
+  });
+});
+
+global.io = io;
+global.socketPool = socketPool;
