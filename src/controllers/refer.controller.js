@@ -36,6 +36,13 @@ module.exports.addRefer = async (req, res) => {
     });
   }
 
+  if (!req.body.experience) {
+    return res.status(400).send({
+      error: true,
+      message: "Experience required"
+    });
+  }
+
   if (!req.body.jobId) {
     return res.status(400).send({
       error: true,
@@ -71,6 +78,7 @@ module.exports.addRefer = async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             mobile: req.body.mobile,
+            experience: req.body.experience,
             resume: req.body.resume
           });
 
@@ -99,6 +107,7 @@ module.exports.addRefer = async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       mobile: req.body.mobile,
+      experience: req.body.experience,
       resume: req.body.resume
     });
 
@@ -121,13 +130,6 @@ module.exports.addRefer = async (req, res) => {
 
 module.exports.updateReferalStatus = (req, res) => {
   const referId = req.params.referId;
-
-  // if (!req.body.status) {
-  //   return res.status(400).send({
-  //     error: true,
-  //     message: "Status required"
-  //   });
-  // }
 
   referModel.findById(referId, (err, referFound) => {
     if (err) {

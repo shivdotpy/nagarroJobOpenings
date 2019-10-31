@@ -6,6 +6,7 @@ const referModel = mongoose.Schema({
   mobile: String,
   email: String,
   resume: String,
+  experience: { type: String, default: "Fresher" },
   status: { type: String, default: "Open" },
   referBy: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
   assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
