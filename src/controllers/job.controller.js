@@ -311,7 +311,8 @@ module.exports.editJobs = (req, res) => {
       location: req.body.location,
       mandatorySkills: req.body.mandatorySkills,
       goodToHaveSkills: req.body.goodToHaveSkills,
-      noOfPositions: req.body.noOfPositions,
+      noOfPositions:
+        req.body.status.toLowerCase() == "close" ? 0 : req.body.noOfPositions,
       experience: req.body.experience
     },
     (err, jobUpdated) => {
