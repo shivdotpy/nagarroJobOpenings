@@ -353,6 +353,11 @@ module.exports.updateJobStatus = (req, res) => {
       });
     } else {
       jobFound.status = req.body.status;
+
+      if (jobFound.status.toLowerCase() === "close") {
+        jobFound.noOfPositions = 0;
+      }
+
       jobFound.save((err, jobStatusChanged) => {
         if (err) {
           return res.status(500).send({
