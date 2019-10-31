@@ -1,5 +1,6 @@
 const jobModel = require("../models/job.model");
 const skillModel = require("../models/skills.model");
+const referalModel = require("../models/refer.model");
 const fs = require("fs");
 const xlsx = require("xlsx");
 
@@ -250,30 +251,45 @@ module.exports.getLatestJobs = (req, res) => {
 module.exports.deleteJob = (req, res) => {
   const jobId = req.params.id;
 
-  jobModel.findOne({ _id: jobId }, (err, jobFound) => {
+  referalModel.findOne({ jobId: jobId }, (err, referalFound) => {
     if (err) {
       return res.status(500).send({
         error: true,
-        message: "Error while finding Job",
+        message: "Error while finding the referal",
         data: err
       });
-    } else if (!jobFound) {
-      return res.status(404).send({
+    } else if (referalFound) {
+      return res.status(400).send({
         error: true,
-        message: "No job available with this ID"
+        message: "Referal already exit, job cannot be deleted now !"
       });
     } else {
-      jobModel.findOneAndDelete({ _id: jobId }, (err, jobDeleted) => {
+      jobModel.findOne({ _id: jobId }, (err, jobFound) => {
         if (err) {
           return res.status(500).send({
             error: true,
-            message: "Error while deleting Job",
+            message: "Error while finding Job",
             data: err
           });
+        } else if (!jobFound) {
+          return res.status(404).send({
+            error: true,
+            message: "No job available with this ID"
+          });
         } else {
-          return res.status(200).send({
-            error: false,
-            message: "Job opening deleted successfully"
+          jobModel.findOneAndDelete({ _id: jobId }, (err, jobDeleted) => {
+            if (err) {
+              return res.status(500).send({
+                error: true,
+                message: "Error while deleting Job",
+                data: err
+              });
+            } else {
+              return res.status(200).send({
+                error: false,
+                message: "Job opening deleted successfully"
+              });
+            }
           });
         }
       });
