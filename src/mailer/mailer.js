@@ -8,11 +8,11 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-module.exports.mail = (to, message) => {
+module.exports.mail = (to, message, subject = `Your referal status`) => {
   const mailOptions = {
     from: "nagarroreferral@gmail.com",
     to: to,
-    subject: `Your referal status`,
+    subject: subject,
     html: message
   };
 

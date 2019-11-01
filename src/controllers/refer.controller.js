@@ -160,6 +160,33 @@ module.exports.updateReferalStatus = (req, res) => {
           if (err) {
             console.log("error on finding job");
           } else {
+            // Send mail to assined person
+            userModel.findById(referFound.assignedTo, (err, userFound) => {
+              if (userFound) {
+                fs.readFile(
+                  path.join(
+                    __dirname,
+                    "..",
+                    "mailer",
+                    "samples",
+                    "ticketAssigned.html"
+                  ),
+                  (err, referralHTML) => {
+                    mailer.mail(
+                      userFound.email,
+                      referralHTML
+                        .toString()
+                        .replace("#ASSIGNEDTO", userFound.firstName)
+                        .replace("#TICKETID", referId)
+                        .replace("#CANDIDATE", referFound.name)
+                        .replace("#POSITION", jobFound.title),
+                      "New ticket assigned"
+                    );
+                  }
+                );
+              }
+            });
+
             const Notification = new notificationModel({
               userId: req.body.assignedTo,
               message: `${referFound.name} assigned to you for the position of ${jobFound.title} !`
