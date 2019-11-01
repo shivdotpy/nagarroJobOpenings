@@ -264,12 +264,32 @@ module.exports.getReferalsByJobId = (req, res) => {
           data: err
         });
       } else {
-        return res.status(200).send({
-          error: false,
-          message: referalsResult.length
-            ? "Referrals found"
-            : "No referral exists",
-          data: referalsResult
+        jobModel.findById(req.params.jobId, (err, jobFound) => {
+          if (err) {
+            return res.status(500).send({
+              error: true,
+              message: "Error while finding job",
+              data: err
+            });
+          } else {
+            let matched = [];
+            let unmatched = [];
+            referalsResult.forEach(referral => {
+              if (referral.experience === jobFound.experience) {
+                matched.push(referral);
+              } else {
+                unmatched.push(referral);
+              }
+            });
+
+            return res.status(200).send({
+              error: false,
+              message: matched.concat(unmatched).length
+                ? "Referrals found"
+                : "No referral exists",
+              data: matched.concat(unmatched)
+            });
+          }
         });
       }
     })
