@@ -272,23 +272,110 @@ module.exports.getReferalsByJobId = (req, res) => {
               data: err
             });
           } else {
-            let matched = [];
-            let unmatched = [];
+            let fresher = [];
+            let e0to1 = [];
+            let e1to2p5 = [];
+            let e2p5to6 = [];
+            let e6to10 = [];
+            let e10plus = [];
+            let others = [];
             referalsResult.forEach(referral => {
-              if (referral.experience === jobFound.experience) {
-                matched.push(referral);
+              if (referral.experience === "fresher") {
+                fresher.push(referral);
+              } else if (referral.experience === "0 - 1") {
+                e0to1.push(referral);
+              } else if (referral.experience === "1 - 2.5") {
+                e1to2p5.push(referral);
+              } else if (referral.experience === "2.5 - 6") {
+                e2p5to6.push(referral);
+              } else if (referral.experience === "6 - 10") {
+                e6to10.push(referral);
+              } else if (referral.experience === "10+") {
+                e10plus.push(referral);
               } else {
-                unmatched.push(referral);
+                others.push(referral);
               }
             });
 
-            return res.status(200).send({
-              error: false,
-              message: matched.concat(unmatched).length
-                ? "Referrals found"
-                : "No referral exists",
-              data: matched.concat(unmatched)
-            });
+            if (jobFound.experience === "Fresher") {
+              return res.status(200).send({
+                error: false,
+                message: "Referals",
+                data: fresher.concat(
+                  e0to1,
+                  e1to2p5,
+                  e2p5to6,
+                  e6to10,
+                  e10plus,
+                  others
+                )
+              });
+            } else if (jobFound.experience === "0 - 1") {
+              return res.status(200).send({
+                error: false,
+                message: "Referals",
+                data: e0to1.concat(
+                  fresher,
+                  e1to2p5,
+                  e2p5to6,
+                  e6to10,
+                  e10plus,
+                  others
+                )
+              });
+            } else if (jobFound.experience === "1 - 2.5") {
+              return res.status(200).send({
+                error: false,
+                message: "Referals",
+                data: e1to2p5.concat(
+                  e2p5to6,
+                  e0to1,
+                  e6to10,
+                  e10plus,
+                  fresher,
+                  others
+                )
+              });
+            } else if (jobFound.experience === "2.5 - 6") {
+              return res.status(200).send({
+                error: false,
+                message: "Referals",
+                data: e2p5to6.concat(
+                  e6to10,
+                  e1to2p5,
+                  e10plus,
+                  e0to1,
+                  fresher,
+                  others
+                )
+              });
+            } else if (jobFound.experience === "6 - 10") {
+              return res.status(200).send({
+                error: false,
+                message: "Referals",
+                data: e6to10.concat(
+                  e10plus,
+                  e2p5to6,
+                  e1to2p5,
+                  e0to1,
+                  fresher,
+                  others
+                )
+              });
+            } else if (jobFound.experience === "10+") {
+              return res.status(200).send({
+                error: false,
+                message: "Referals",
+                data: e10plus.concat(
+                  e6to10,
+                  e2p5to6,
+                  e1to2p5,
+                  e0to1,
+                  fresher,
+                  others
+                )
+              });
+            }
           }
         });
       }
