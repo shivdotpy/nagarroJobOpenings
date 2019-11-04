@@ -170,15 +170,15 @@ module.exports.bulkUpload = (req, res) => {
       sheetData.forEach(sheet => {
         const Job = new jobModel({
           _id: Math.floor(100000 + Math.random() * 900000),
-          title: sheet.title,
-          description: sheet.description,
-          jobType: sheet.jobType,
-          type: sheet.type,
-          location: sheet.location.split(","),
-          mandatorySkills: sheet.mandatorySkills.split(","),
-          goodToHaveSkills: sheet.goodToHaveSkills.split(","),
-          noOfPositions: sheet.noOfPositions,
-          experience: sheet.experience,
+          title: sheet.Title,
+          description: sheet.Description ? sheet.Description : "",
+          jobType: sheet["Job Type"],
+          type: sheet.Type,
+          location: sheet.Location.split(","),
+          mandatorySkills: sheet["Mandatory Skill"].split(","),
+          goodToHaveSkills: sheet["Good To Have Skill"].split(","),
+          noOfPositions: sheet["No of Positions"],
+          experience: sheet["Experience(in years)"],
           postBy: req.userId,
           assignedTo: req.userId
         });
