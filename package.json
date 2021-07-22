@@ -22,7 +22,7 @@
     "swagger-jsdoc": "^3.4.0",
     "swagger-model-validator": "^3.0.11",
     "swagger-ui-express": "^4.1.1",
-    "xlsx": "^0.15.1"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
